@@ -1,0 +1,579 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Informe de Cierre PDI 2025 — Planeación y Gestión Institucional</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="./data-bundle.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#f0f4f8;font-family:'Montserrat',sans-serif;overflow:hidden;height:100vh;display:flex;}
+#snav{position:fixed;left:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;padding:8px;background:rgba(15,56,90,0.95);backdrop-filter:blur(10px);border-radius:0 12px 12px 0;border:1px solid rgba(31,178,222,0.3);border-left:none;z-index:300;}
+#snav button{background:rgba(31,178,222,0.15);border:1px solid rgba(31,178,222,0.4);color:white;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:0.95em;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+#snav button:hover{background:rgba(31,178,222,0.45);border-color:#1FB2DE;}
+#snav button:disabled{opacity:0.2;cursor:default;}
+#main{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.slide{display:none;position:absolute;inset:0;align-items:center;justify-content:center;}
+.slide.active{display:flex;animation:fi 0.3s ease;}
+@keyframes fi{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+.sf{width:min(100vw,calc(100vh*16/9));height:100vh;max-height:100vh;position:relative;overflow:hidden;background:white;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:rgba(15,56,90,0.3);border-radius:4px;}
+</style>
+</head><body>
+<div id="snav">
+  <button id="btn-home" onclick="goHome()" disabled title="Inicio">🏠</button>
+  <button id="btn-back" onclick="goBack()" disabled title="Volver">←</button>
+</div>
+<div id="main">
+<div class="slide active" id="slide-home" data-title="Inicio">
+<div class="sf" style="background:white;display:flex;flex-direction:column;overflow:hidden;">
+
+  <div style="padding:10px 20px 8px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;">
+    <div style="text-align:center;">
+      <div style="color:#0F385A;font-size:clamp(16px,2.2vw,30px);font-weight:900;text-transform:uppercase;letter-spacing:2px;" id="home-title">Informe de Cierre PDI 2025</div>
+      <div style="color:#1FB2DE;font-size:clamp(8px,0.78vw,11px);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-top:2px;" id="home-subtitle">Planeación y Gestión Institucional</div>
+    </div>
+    <img src="./public/img/brand/logo-poli.jpg" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);height:54px;object-fit:contain;">
+  </div>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 8px 8px;min-height:0;overflow:hidden;">
+
+    <!-- LEFT: 3 buttons -->
+    <div style="width:152px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;height:min(calc(100vh - 108px),370px);">
+      <button onclick="goTo('ciclo')" style="background:#EC0677;color:white;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Ciclo de la<br>Estrategia</button>
+      <button onclick="goTo('avances')" style="background:#A6CE38;color:#0F385A;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Avance Líneas<br>Estratégicas</button>
+      <button onclick="goTo('logros')" style="background:#1FB2DE;color:#0F385A;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Logros por<br>Línea Estratégica</button>
+    </div>
+
+    <!-- CENTER: integrated flower diagram + sphere -->
+    <div style="position:relative;height:min(calc(100vh - 108px),370px);aspect-ratio:1225/735;flex-shrink:0;">
+      <img src="./public/img/brand/lineas-estrategicas.jpg" style="width:100%;height:100%;object-fit:contain;">
+      <div style="position:absolute;left:35.5%;top:50.1%;transform:translate(-50%,-50%);width:17%;aspect-ratio:1/1;border-radius:50%;background:white;z-index:1;"></div>
+      <div id="esfera3d" style="position:absolute;left:35.5%;top:50.1%;transform:translate(-50%,-50%);width:17%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;background:transparent;z-index:2;"></div>
+      <svg viewBox="0 0 1225 735" style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;">
+        <ellipse cx="123" ry="180" cy="303" rx="100" fill="rgba(0,0,0,0.001)" style="cursor:pointer;pointer-events:all" onclick="goTo('cal-avance')"/>
+        <ellipse cx="1038" ry="117" cy="236" rx="170" fill="rgba(0,0,0,0.001)" style="cursor:pointer;pointer-events:all" onclick="goTo('exp-avance')"/>
+        <ellipse cx="327" ry="69" cy="605" rx="175" fill="rgba(0,0,0,0.001)" style="cursor:pointer;pointer-events:all" onclick="goTo('edu-avance')"/>
+        <ellipse cx="1008" ry="105" cy="487" rx="162" fill="rgba(0,0,0,0.001)" style="cursor:pointer;pointer-events:all" onclick="goTo('exp2-avance')"/>
+        <ellipse cx="784" ry="200" cy="656" rx="146" fill="rgba(0,0,0,0.001)" style="cursor:pointer;pointer-events:all" onclick="goTo('to-avance')"/>
+        <ellipse cx="830" ry="200" cy="12" rx="127" fill="rgba(0,0,0,0.001)" style="cursor:pointer;pointer-events:all" onclick="goTo('sos-avance')"/>
+      </svg>
+    </div>
+
+    <!-- RIGHT: 4 buttons -->
+    <div style="width:152px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;height:min(calc(100vh - 108px),370px);">
+      <button onclick="goTo('planes')" style="background:#0F385A;color:white;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Planes Anuales<br>de Retos</button>
+      <button onclick="goTo('proyectos')" style="background:#42F2F2;color:#0F385A;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Proyectos<br>Estratégicos</button>
+      <button onclick="goTo('balance')" style="background:#15BECE;color:#0F385A;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Balance<br>Institucional</button>
+      <button onclick="goTo('orgullosamente')" style="background:#FBAF17;color:#0F385A;border:none;border-radius:10px;padding:8px 7px;cursor:pointer;font-family:inherit;font-weight:800;font-size:clamp(10px,0.9vw,13px);letter-spacing:0.3px;text-transform:uppercase;line-height:1.4;text-align:center;width:100%;flex:1;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform='scale(1)'">Orgullosamente<br>Poli</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  var D = window.PDI_DATA;
+  if(!D){document.getElementById('main').innerHTML='<div style="padding:40px;text-align:center"><h1>Error</h1><p>No se encontro data-bundle.js</p></div>';return;}
+  
+  var cfg={};(D.config||[]).forEach(function(r){if(r.seccion==='general'||r.seccion==='branding')cfg[r.clave]=r.valor;});
+  var avance=D.avance||[];
+  var foda=D.foda||[];
+  var pestel=D.pestel||[];
+  var nav=D.navegacion||[];
+  var proy=D.proyectos||[];
+  var obj=D.objetivos||[];
+  var reportes=D.reportes||[];
+  var unidades=D.unidades||[];
+  var paleta={};(D.config||[]).forEach(function(r){if(r.seccion==='paleta')paleta[r.clave]=r.valor;});
+  
+  var colorMap={'calidad':paleta.pink||'#EC0677','educacion':paleta.navy||'#0F385A','expansion':paleta.yellow||'#FBAF17','experiencia':paleta.cyan||'#1FB2DE','transformacion':paleta.teal||'#15BECE','sostenibilidad':paleta.green||'#A6CE38'};
+  var iconMap={'calidad':'🏅','educacion':'📚','expansion':'📈','experiencia':'⭐','transformacion':'🔄','sostenibilidad':'🌱'};
+  var lineNameMap={'calidad':'Calidad','educacion':'Educación para Toda la Vida','expansion':'Expansión','experiencia':'Experiencia','transformacion':'Transformación Organizacional','sostenibilidad':'Sostenibilidad'};
+  
+  var avMap={};
+  avance.forEach(function(a){avMap[a.id]=a;});
+  
+  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function gauge(pct,color,label){
+    var c=Math.round(pct*2.39);
+    return '<svg viewBox="0 0 100 100" style="width:80px;height:80px"><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="8"/><circle cx="50" cy="50" r="38" fill="none" stroke="'+esc(color)+'" stroke-width="8" stroke-dasharray="'+c+' 239" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="46" text-anchor="middle" font-size="18" font-weight="900" fill="#0F385A" font-family="Montserrat,sans-serif">'+pct+'%</text><text x="50" y="60" text-anchor="middle" font-size="8" font-weight="700" fill="#666" font-family="Montserrat,sans-serif">'+esc(label)+'</text></svg>';
+  }
+  
+  var h='';
+  
+  /* ===== CICLO ===== */
+  h+='<div class="slide" id="slide-ciclo" data-title="Ciclo de la Estrategia"><div class="sf" style="background:white;display:flex;flex-direction:column;overflow:hidden;">';
+  h+='<div style="padding:10px 24px 4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;"><span style="font-weight:900;font-size:clamp(15px,2vw,28px);color:#0F385A;text-transform:uppercase;letter-spacing:3px;">Ciclo de la Estrategia</span><img src="./public/img/brand/logo-poli.jpg" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);height:46px;object-fit:contain;"></div>';
+  h+='<div style="width:55px;height:3px;background:#1FB2DE;border-radius:2px;margin:0 auto 2px;flex-shrink:0;"></div>';
+  h+='<div style="flex:1;display:flex;flex-direction:column;padding:4px 16px 8px;gap:0;">';
+  h+='<div style="display:flex;align-items:flex-end;"><div style="flex:0 0 22%;"></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;"><div style="width:72%;"><div onclick="goTo(\'analisis\')" onmouseenter="this.style.opacity=\'0.88\'" onmouseleave="this.style.opacity=\'1\'" style="display:flex;align-items:stretch;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.16);cursor:pointer;width:100%;min-height:78px;"><div style="background:#0F385A;min-width:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-weight:900;font-size:clamp(15px,1.6vw,20px);">1</span></div><div style="background:#1FB2DE;padding:8px 10px;flex:1;display:flex;align-items:center;gap:3px;"><span style="color:#0F385A;font-weight:800;font-size:clamp(8.5px,0.78vw,11px);text-transform:uppercase;letter-spacing:0.3px;line-height:1.4;">Análisis del<br>Contexto</span><span style="color:#0F385A;font-size:0.85em;margin-left:3px">↗</span></div></div></div><div style="width:3px;height:10px;background:#0F385A;"></div></div><div style="flex:0 0 22%;"></div></div>';
+  h+='<div style="flex:1;display:flex;align-items:stretch;min-height:0;">';
+  h+='<div style="flex:0 0 22%;display:flex;flex-direction:column;justify-content:space-evenly;border-right:3px solid #0F385A;padding:6px 8px 6px 0;gap:12px;">';
+  h+='<div style="display:grid;grid-template-columns:repeat(3,12px);gap:3px;opacity:0.4;margin-bottom:2px;"><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span></div>';
+  h+='<div style="display:flex;align-items:stretch;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.16);width:100%;min-height:78px;"><div style="background:#0F385A;min-width:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-weight:900;font-size:clamp(15px,1.6vw,20px);">5</span></div><div style="background:#FBAF17;padding:8px 10px;flex:1;display:flex;align-items:center;gap:3px;"><span style="color:#0F385A;font-weight:800;font-size:clamp(8.5px,0.78vw,11px);text-transform:uppercase;letter-spacing:0.3px;line-height:1.4;">Cierre de metas,<br>planes y proyectos</span></div></div>';
+  h+='<div style="display:flex;align-items:stretch;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.16);width:100%;min-height:78px;"><div style="background:#0F385A;min-width:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-weight:900;font-size:clamp(15px,1.6vw,20px);">4</span></div><div style="background:#A6CE38;padding:8px 10px;flex:1;display:flex;align-items:center;gap:3px;"><span style="color:#0F385A;font-weight:800;font-size:clamp(8.5px,0.78vw,11px);text-transform:uppercase;letter-spacing:0.3px;line-height:1.4;">Seguimiento y<br>reporte de avance</span></div></div></div>';
+  h+='<div style="flex:1;border-top:3px solid #0F385A;border-bottom:3px solid #0F385A;display:flex;align-items:center;justify-content:center;padding:8px 12px;background:white;"><img src="./public/img/brand/lineas-estrategicas.jpg" style="max-width:min(60vh,96%);max-height:min(48vh,92%);width:auto;height:auto;object-fit:contain;display:block;"></div>';
+  h+='<div style="flex:0 0 22%;display:flex;flex-direction:column;justify-content:space-evenly;border-left:3px solid #0F385A;padding:6px 0 6px 8px;gap:12px;">';
+  h+='<div style="display:flex;align-items:stretch;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.16);width:100%;min-height:78px;"><div style="background:#0F385A;min-width:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-weight:900;font-size:clamp(15px,1.6vw,20px);">2</span></div><div style="background:#EC0677;padding:8px 10px;flex:1;display:flex;align-items:center;gap:3px;"><span style="color:white;font-weight:800;font-size:clamp(8.5px,0.78vw,11px);text-transform:uppercase;letter-spacing:0.3px;line-height:1.4;">Definición y<br>aprobación de<br>metas y recursos</span></div></div>';
+  h+='<div style="display:flex;align-items:stretch;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.16);width:100%;min-height:78px;"><div style="background:#0F385A;min-width:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-weight:900;font-size:clamp(15px,1.6vw,20px);">3</span></div><div style="background:#15BECE;padding:8px 10px;flex:1;display:flex;align-items:center;gap:3px;"><span style="color:#0F385A;font-weight:800;font-size:clamp(8.5px,0.78vw,11px);text-transform:uppercase;letter-spacing:0.3px;line-height:1.4;">Implementación<br>de planes y<br>proyectos</span></div></div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(3,12px);gap:3px;opacity:0.4;margin-top:2px;"><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span><span style="color:#1FB2DE;font-weight:900;font-size:11px;">×</span></div></div></div></div></div></div>';
+
+  /* ===== ANALISIS ===== */
+  h+='<div class="slide" id="slide-analisis" data-title="Análisis del Contexto"><div class="sf" style="background:white;display:flex;flex-direction:column;overflow:hidden;">';
+  h+='<div style="padding:12px 24px 8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;"><div style="text-align:center;"><div style="font-weight:900;color:#0F385A;font-size:clamp(14px,1.8vw,24px);text-transform:uppercase;letter-spacing:2px;">Análisis del Contexto</div></div><img src="./public/img/brand/logo-poli.jpg" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);height:42px;object-fit:contain;"></div>';
+  h+='<div style="width:55px;height:3px;background:#1FB2DE;border-radius:2px;margin:0 auto 6px;flex-shrink:0;"></div>';
+
+  /* FODA + PESTEL modals */
+  var quadCfg={F:{color:'#A6CE38',label:'Fortalezas',titleColor:'#0F385A'},O:{color:'#1FB2DE',label:'Oportunidades',titleColor:'#0F385A'},D:{color:'#EC0677',label:'Debilidades',titleColor:'white'},A:{color:'#FBAF17',label:'Amenazas',titleColor:'#0F385A'}};
+  var quadKey={F:'fortalezas',O:'oportunidades',D:'debilidades',A:'amenazas'};
+  ['F','O','D','A'].forEach(function(q){
+    var items=foda.filter(function(r){return r.cuadrante===quadKey[q];});
+    var c=quadCfg[q];
+    h+='<div id="foda-modal-'+q+'" onclick="this.style.display=\'none\'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;"><div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:24px 28px;max-width:420px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.3);border-top:6px solid '+c.color+';">';
+    h+='<div style="font-weight:900;color:'+c.color+';font-size:1.1em;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">'+c.label+'</div>';
+    items.forEach(function(r){
+      h+='<div style="display:flex;gap:8px;align-items:flex-start;margin:5px 0"><span style="color:'+c.color+';font-weight:900;flex-shrink:0">▸</span><span style="font-size:0.82em;color:#333;line-height:1.4">'+esc(r.item)+'</span></div>';
+    });
+    h+='<button onclick="document.getElementById(\'foda-modal-'+q+'\').style.display=\'none\'" style="margin-top:14px;background:'+c.color+';color:'+c.titleColor+';border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-weight:800;font-size:0.85em;float:right">Cerrar</button></div></div>';
+  });
+
+  /* PESTEL modals */
+  var pestelCfg={P:{color:'#EC0677',label:'P — Impacto Político'},E1:{color:'#FBAF17',label:'E — Impacto Económico'},S:{color:'#1FB2DE',label:'S — Impacto Social'},T:{color:'#15BECE',label:'T — Impacto Tecnológico'},E2:{color:'#A6CE38',label:'E — Impacto Ecológico'},L:{color:'#0F385A',label:'L — Impacto Legal'}};
+  var pestelByLetter={};
+  pestel.forEach(function(r){
+    var l=r.letra||'?';
+    var key=l;
+    if(l==='E'){
+      if(r.nombre && r.nombre.toLowerCase().includes('económico')) key='E1';
+      else if(r.nombre && r.nombre.toLowerCase().includes('ecológico')) key='E2';
+    }
+    if(!pestelByLetter[key])pestelByLetter[key]={nombre:r.nombre,color:r.color,items:[]};
+    pestelByLetter[key].items.push({cat:r.orden,item:r.item});
+  });
+  Object.keys(pestelByLetter).forEach(function(l){
+    var g=pestelByLetter[l];
+    var c=pestelCfg[l]||{color:g.color,label:g.nombre};
+    var modalId='pestel-modal-'+l;
+    h+='<div id="'+modalId+'" onclick="this.style.display=\'none\'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;"><div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:24px 28px;max-width:420px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.3);border-top:6px solid '+c.color+';">';
+    h+='<div style="font-weight:900;color:'+c.color+';font-size:1.1em;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">'+esc(c.label)+'</div>';
+    var currentCat='';
+    g.items.forEach(function(it){
+      if(it.cat!==currentCat){
+        if(currentCat!=='')h+='</div>';
+        currentCat=it.cat;
+        h+='<div style="margin-bottom:8px"><div style="font-weight:800;color:'+c.color+';font-size:0.71em;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">'+esc(it.cat)+'</div><ul style="padding-left:16px;margin:0">';
+      }
+      // Split items by semicolon
+      var parts=it.item.split(';');
+      parts.forEach(function(p){
+        h+='<li style="margin:2px 0;font-size:0.69em;color:#333;line-height:1.4">'+esc(p.trim())+'</li>';
+      });
+    });
+    if(currentCat!=='')h+='</ul></div>';
+    h+='<button onclick="document.getElementById(\''+modalId+'\').style.display=\'none\'" style="margin-top:14px;background:'+c.color+';color:'+(l==='P'||l==='L'?'white':'#0F385A')+';border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-weight:800;font-size:0.85em;float:right">Cerrar</button></div></div>';
+  });
+
+  /* FODA + PESTEL tiles side by side */
+  h+='<div style="flex:1;display:flex;gap:20px;padding:8px 24px 14px;align-items:stretch;overflow:hidden;">';
+  h+='<div style="flex:1;display:flex;flex-direction:column;gap:8px;"><div style="text-align:center;font-weight:900;color:#0F385A;font-size:clamp(12px,1.2vw,16px);text-transform:uppercase;letter-spacing:1px;">FODA Institucional</div><div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;">';
+  ['F','O','D','A'].forEach(function(q){
+    var c=quadCfg[q];
+    var titleColor=c.label==='Debilidades'?'white':c.titleColor;
+    h+='<div onclick="document.getElementById(\'foda-modal-'+q+'\').style.display=\'flex\'" style="background:'+c.color+';border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:6px;padding:12px;transition:opacity 0.15s;box-shadow:0 3px 12px rgba(0,0,0,0.15);" onmouseenter="this.style.opacity=\'0.82\'" onmouseleave="this.style.opacity=\'1\'"><span style="color:'+titleColor+';font-size:clamp(22px,2.8vw,38px);font-weight:900;line-height:1">'+q+'</span><span style="color:'+titleColor+';font-size:clamp(8px,0.72vw,10px);font-weight:800;text-transform:uppercase;letter-spacing:0.5px;text-align:center">'+c.label+'</span></div>';
+  });
+  h+='</div><div style="text-align:center;font-size:0.68em;color:#888;margin-top:4px;">↑ Haz clic en cada cuadrante para ver el detalle</div></div>';
+  h+='<div style="width:2px;background:#eef2f7;border-radius:2px;flex-shrink:0;"></div>';
+  h+='<div style="flex:1;display:flex;flex-direction:column;gap:8px;"><div style="text-align:center;font-weight:900;color:#0F385A;font-size:clamp(12px,1.2vw,16px);text-transform:uppercase;letter-spacing:1px;">PESTEL Institucional</div><div style="flex:1;display:flex;gap:8px;align-items:stretch;">';
+  var pCfg=[{k:'E1',c:'#FBAF17',l:'Económico',tc:'#0F385A'},{k:'P',c:'#EC0677',l:'Político',tc:'white'},{k:'S',c:'#1FB2DE',l:'Social',tc:'#0F385A'},{k:'T',c:'#15BECE',l:'Tecnológico',tc:'#0F385A'},{k:'E2',c:'#A6CE38',l:'Ecológico',tc:'#0F385A'},{k:'L',c:'#0F385A',l:'Legal',tc:'white'}];
+  pCfg.forEach(function(p){
+    h+='<div onclick="document.getElementById(\'pestel-modal-'+p.k+'\').style.display=\'flex\'" style="background:'+p.c+';border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:4px;padding:10px 6px;flex:1;transition:opacity 0.15s;box-shadow:0 3px 12px rgba(0,0,0,0.15);" onmouseenter="this.style.opacity=\'0.82\'" onmouseleave="this.style.opacity=\'1\'"><span style="color:'+p.tc+';font-size:clamp(20px,2.5vw,34px);font-weight:900;line-height:1">'+(p.k==='E1'||p.k==='E2'?'E':p.k)+'</span><span style="color:'+p.tc+';font-size:clamp(7px,0.65vw,9px);font-weight:800;text-transform:uppercase;letter-spacing:0.3px;text-align:center">'+p.l+'</span></div>';
+  });
+  h+='</div><div style="text-align:center;font-size:0.68em;color:#888;margin-top:4px;">↑ Haz clic en cada letra para ver el impacto</div></div></div></div></div>';
+
+  /* ===== FODA full view ===== */
+  h+='<div class="slide" id="slide-foda" data-title="FODA Institucional"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+  h+='<div style="background:#0F385A;padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">📊</span><span style="color:white;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">FODA Institucional 2025</span></div>';
+  h+='<div style="flex:1;overflow-y:auto;padding:14px 22px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
+  var fodaCfg={debilidades:{color:'#EC0677',letter:'D',icon:'⚠️'},oportunidades:{color:'#1FB2DE',letter:'O',icon:'🚀'},fortalezas:{color:'#A6CE38',letter:'F',icon:'💪'},amenazas:{color:'#0F385A',letter:'A',icon:'⚡'}};
+  ['debilidades','oportunidades','fortalezas','amenazas'].forEach(function(cuad){
+    var items=foda.filter(function(r){return r.cuadrante===cuad;});
+    var c=fodaCfg[cuad];
+    h+='<div style="background:white;border-radius:12px;overflow:hidden;border:2px solid '+c.color+'30;box-shadow:0 2px 10px rgba(0,0,0,0.08)">';
+    h+='<div style="background:'+c.color+';padding:10px 14px;display:flex;align-items:center;gap:10px"><div style="background:rgba(255,255,255,0.2);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1em;font-weight:900;color:white;flex-shrink:0">'+c.letter+'</div><span style="font-weight:900;color:white;font-size:0.82em;text-transform:uppercase;letter-spacing:0.8px">'+cuad.toUpperCase()+'</span></div>';
+    h+='<div style="padding:10px 14px">';
+    items.forEach(function(r){
+      h+='<div style="display:flex;gap:6px;align-items:flex-start;margin:4px 0;font-size:0.71em;color:#333;line-height:1.35"><span style="color:'+c.color+';font-weight:900;flex-shrink:0;margin-top:1px">▸</span><span>'+esc(r.item)+'</span></div>';
+    });
+    h+='</div></div>';
+  });
+  h+='</div></div></div></div>';
+
+  /* ===== PESTEL full view ===== */
+  h+='<div class="slide" id="slide-pestel" data-title="PESTEL Institucional"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+  h+='<div style="background:#0F385A;padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🌐</span><span style="color:white;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Análisis PESTEL Institucional 2025</span></div>';
+  h+='<div style="flex:1;overflow-y:auto;padding:14px 22px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+  var pestelQuad={E1:{color:'#FBAF17',icon:'💰',label:'IMPACTO ECONÓMICO',tc:'#0F385A'},P:{color:'#EC0677',icon:'🏛️',label:'IMPACTO POLÍTICO',tc:'white'},S:{color:'#1FB2DE',icon:'👥',label:'IMPACTO SOCIAL',tc:'#0F385A'},T:{color:'#15BECE',icon:'💻',label:'IMPACTO TECNOLÓGICO',tc:'#0F385A'},E2:{color:'#A6CE38',icon:'🌱',label:'IMPACTO ECOLÓGICO',tc:'#0F385A'},L:{color:'#0F385A',icon:'⚖️',label:'IMPACTO LEGAL',tc:'white'}};
+  Object.keys(pestelByLetter).forEach(function(l){
+    var g=pestelByLetter[l];
+    var q=pestelQuad[l]||{color:g.color||'#888',icon:'📌',label:g.nombre||'OTROS',tc:'#0F385A'};
+    h+='<div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.1);border-left:4px solid '+q.color+'">';
+    h+='<button onclick="togglePestel(this)" style="width:100%;background:'+q.color+';color:'+q.tc+';border:none;padding:11px 16px;cursor:pointer;font-family:inherit;font-weight:800;font-size:0.82em;display:flex;align-items:center;gap:10px;text-align:left"><span style="font-size:1.2em">'+q.icon+'</span><span style="flex:1"><strong style="font-size:1.2em">'+(l==='E1'||l==='E2'?'E':l)+'</strong> — '+esc(q.label)+'</span><span>▼</span></button>';
+    h+='<div class="pestel-body" style="display:none;padding:12px 16px">';
+    h+='<div style="margin-bottom:6px;font-size:0.69em;color:#333;line-height:1.4">';
+    g.items.forEach(function(it){
+      h+=esc(it.cat)+': '+esc(it.item)+'<br>';
+    });
+    h+='</div></div></div>';
+  });
+  h+='</div></div></div></div>';
+
+  /* ===== AVANCES OVERVIEW ===== */
+  h+='<div class="slide" id="slide-avances" data-title="Avance Líneas Estratégicas 2025"><div class="sf" style="display:flex;flex-direction:column;background:white;">';
+  h+='<div style="background:#0F385A;padding:13px 22px;flex-shrink:0;display:flex;align-items:center;gap:12px"><img src="./public/img/brand/logo-poli.jpg" style="height:28px"><span style="color:white;font-weight:900;font-size:clamp(11px,1.6vw,21px);text-transform:uppercase;letter-spacing:1px">Avance Líneas Estratégicas 2025</span><div style="margin-left:auto;color:#1FB2DE;font-size:0.7em;font-weight:700">↙ Clic sobre cada línea del diagrama</div></div>';
+  h+='<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;position:relative;background:#f8fafe;"><img src="./public/img/brand/lineas-estrategicas.jpg" style="max-width:min(70vh,90%);max-height:85vh;object-fit:contain">';
+  h+='<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;z-index:2">';
+  var avPos=[{id:'sos-avance',x:'44%',y:'9%',rx:'24%',ry:'11%',label:'SOSTENIBILIDAD'},{id:'cal-avance',x:'23%',y:'30%',rx:'14%',ry:'17%',label:'CALIDAD'},{id:'exp-avance',x:'62%',y:'30%',rx:'14%',ry:'18%',label:'EXPANSIÓN'},{id:'edu-avance',x:'58%',y:'60%',rx:'15%',ry:'14%',label:'EDUCACIÓN PARA TODA LA VIDA'},{id:'exp2-avance',x:'26%',y:'58%',rx:'12%',ry:'13%',label:'EXPERIENCIA'},{id:'to-avance',x:'44%',y:'80%',rx:'24%',ry:'11%',label:'TRANSFORMACIÓN ORGANIZACIONAL'}];
+  avPos.forEach(function(p){
+    h+='<ellipse cx="'+p.x+'" cy="'+p.y+'" rx="'+p.rx+'" ry="'+p.ry+'" fill="transparent" style="cursor:pointer" onclick="goTo(\''+p.id+'\')" onmouseenter="this.setAttribute(\'fill\',\'rgba(255,255,255,0.2)\');document.getElementById(\'lbl-'+p.id+'\').style.display=\'block\'" onmouseleave="this.setAttribute(\'fill\',\'transparent\');document.getElementById(\'lbl-'+p.id+'\').style.display=\'none\'"/>';
+    h+='<text id="lbl-'+p.id+'" x="'+p.x+'" y="'+p.y+'" text-anchor="middle" dominant-baseline="middle" fill="#0F385A" font-size="11" font-family="Montserrat,sans-serif" font-weight="900" style="display:none;pointer-events:none;text-shadow:0 1px 3px rgba(255,255,255,0.95)">'+p.label+'</text>';
+  });
+  h+='<circle cx="44%" cy="48%" r="9%" fill="none" stroke="rgba(15,56,90,0.2)" stroke-width="1.5" stroke-dasharray="8 6"><animateTransform attributeName="transform" type="rotate" from="0 44% 48%" to="360 44% 48%" dur="12s" repeatCount="indefinite"/></circle><circle cx="44%" cy="48%" r="6.5%" fill="none" stroke="rgba(31,178,222,0.25)" stroke-width="1.5" stroke-dasharray="5 8"><animateTransform attributeName="transform" type="rotate" from="360 44% 48%" to="0 44% 48%" dur="8s" repeatCount="indefinite"/></circle></svg></div></div></div>';
+
+  /* ===== AVANCE DETAIL SLIDES (6 lines) ===== */
+  var lineIds=['calidad','educacion','expansion','experiencia','transformacion','sostenibilidad'];
+  var slideSuffixes=['cal-avance','edu-avance','exp-avance','exp2-avance','to-avance','sos-avance'];
+  var lineColors=[paleta.pink||'#EC0677',paleta.navy||'#0F385A',paleta.yellow||'#FBAF17',paleta.cyan||'#1FB2DE',paleta.teal||'#15BECE',paleta.green||'#A6CE38'];
+  var lineNames=['Calidad','Educación para Toda la Vida','Expansión','Experiencia','Transformación Organizacional','Sostenibilidad'];
+
+  lineIds.forEach(function(lid,idx){
+    var a=avMap[lid]||{};
+    var pct=parseInt(a.cumplimiento)||0;
+    var esperado=parseInt(a.esperado)||100;
+    var real=parseInt(a.real)||0;
+    var retos=a.retos||'0';
+    var areas=a.areas||'0';
+    var proyectos=a.proyectos||'0';
+    var cmi=a.cmi||'—';
+    var lineColor=lineColors[idx];
+    var slideId=slideSuffixes[idx];
+    var lname=lineNames[idx];
+    var lcolor=lineColor;
+    var logrosList=a.logros||'';
+    var logrosArr=logrosList.split('|').map(function(s){return s.trim();}).filter(function(s){return s;});
+    var dashReal=Math.round(real*2.39);
+    var dashEsp=Math.round(esperado*2.39);
+    var dashCum=Math.round(pct*2.39);
+    var textColor=(lid==='experiencia'||lid==='transformacion'||lid==='expansion'||lid==='sostenibilidad')?'#0F385A':'white';
+
+    h+='<div class="slide" id="slide-'+slideId+'" data-title="'+esc(lname)+'"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+    h+='<div style="background:'+lcolor+';padding:14px 24px;display:flex;align-items:center;gap:12px;flex-shrink:0"><div style="flex:1"><div style="color:white;font-size:0.65em;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:0.85">PDI 2025 — Línea Estratégica</div><div style="color:white;font-weight:900;font-size:clamp(13px,1.8vw,24px);text-transform:uppercase;letter-spacing:1px;margin-top:2px">'+esc(lname)+'</div></div><img src="./public/img/brand/logo-poli.jpg" style="height:38px"></div>';
+    // 3 gauges + stats
+    h+='<div style="background:white;padding:16px 24px;display:flex;justify-content:center;gap:24px;flex-shrink:0;border-bottom:2px solid #eef2f7">';
+    h+=gauge(real,lcolor,'AVANCE REAL');
+    h+=gauge(esperado,'#15BECE','ESPERADO');
+    h+=gauge(pct,'#A6CE38','CUMPLIMIENTO');
+    h+='<div style="display:flex;flex-direction:column;gap:10px;justify-content:center;margin-left:20px"><div style="background:'+lcolor+'18;border:2px solid '+lcolor+'40;border-radius:12px;padding:10px 18px;text-align:center"><div style="font-size:1.6em;font-weight:900;color:'+lcolor+'">'+retos+'</div><div style="font-size:0.65em;color:#666;font-weight:700;text-transform:uppercase">RETOS</div></div><div style="background:#15BECE18;border:2px solid #15BECE40;border-radius:12px;padding:10px 18px;text-align:center"><div style="font-size:1.6em;font-weight:900;color:#15BECE">'+proyectos+'</div><div style="font-size:0.65em;color:#666;font-weight:700;text-transform:uppercase">PROYECTOS</div></div></div>';
+    h+='<div style="display:flex;flex-direction:column;gap:10px;justify-content:center"><div style="background:#0F385A10;border:2px solid #0F385A20;border-radius:12px;padding:10px 18px;text-align:center"><div style="font-size:1.2em;font-weight:900;color:#0F385A">'+areas+'</div><div style="font-size:0.62em;color:#666;font-weight:700;text-transform:uppercase">ÁREAS</div></div><div style="background:#A6CE3818;border:2px solid #A6CE3840;border-radius:12px;padding:10px 18px;text-align:center"><div style="font-size:0.75em;font-weight:800;color:#0F385A">CMI</div><div style="font-size:0.6em;color:#666;font-weight:700">ESTRATÉGICO</div></div></div></div>';
+    // Logros expandibles
+    h+='<div style="flex:1;overflow-y:auto;padding:12px 24px">';
+    if(logrosArr.length){
+      h+='<button onclick="toggleLogros(\''+slideId+'-l\')" style="width:100%;background:'+lcolor+';color:'+textColor+';border:none;border-radius:10px;padding:11px 18px;cursor:pointer;font-family:inherit;font-weight:800;font-size:0.82em;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,0.12);margin-bottom:10px;display:flex;align-items:center;gap:8px"><span>📂</span><span>Principales Logros 2025</span><span style="margin-left:auto">▼</span></button>';
+      h+='<div id="'+slideId+'-l" style="display:none">';
+      logrosArr.forEach(function(logro){
+        var parts=logro.split('—');
+        var title=parts[0]||logro;
+        var desc=parts[1]||'';
+        h+='<div style="display:flex;align-items:flex-start;gap:9px;margin:6px 0;padding:9px 14px;background:white;border-radius:9px;border-left:4px solid '+lcolor+';box-shadow:0 1px 5px rgba(0,0,0,0.07)"><span style="font-size:1.1em;flex-shrink:0">🎯</span><div><div style="font-weight:800;color:'+lcolor+';font-size:0.8em">'+esc(title.trim())+'</div><div style="font-size:0.72em;color:#555;margin-top:2px;line-height:1.4">'+esc(desc.trim())+'</div></div></div>';
+      });
+      h+='</div>';
+    }
+    h+='<div style="margin-top:10px;background:white;border-radius:10px;padding:10px 14px;border:1px solid #e0e8f0;font-size:0.68em;color:#888">Fuente: Kawak — Sistema de Gestión de Retos y Proyectos PDI 2022–2026. Corte: diciembre 2025.</div></div></div></div>';
+  });
+
+  /* ===== LOGROS OVERVIEW ===== */
+  h+='<div class="slide" id="slide-logros" data-title="Logros por Línea Estratégica"><div class="sf" style="background:white;display:flex;flex-direction:column;overflow:hidden;">';
+  h+='<div style="background:#0F385A;padding:14px 22px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🏆</span><span style="color:white;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Logros por Línea Estratégica 2025</span></div>';
+  h+='<div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:12px;padding:14px 20px">';
+  var logroSvgs={
+    calidad:'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><circle cx="20" cy="16" r="10" stroke="white" stroke-width="2"/><path d="M15 26l5 8 5-8" stroke="white" stroke-width="2"/><path d="M13 29h14" stroke="white" stroke-width="2"/><circle cx="20" cy="16" r="5" stroke="white" stroke-width="1.5"/><path d="M17.5 16l2 2 3-3" stroke="white" stroke-width="1.5"/></svg>',
+    expansion:'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><circle cx="20" cy="20" r="14" stroke="white" stroke-width="2"/><path d="M6 20h28M20 6v28" stroke="white" stroke-width="1.5"/><path d="M9 9 l22 22M9 31 l22-22" stroke="white" stroke-width="1.2" stroke-dasharray="2 2"/><circle cx="20" cy="20" r="3" fill="white"/></svg>',
+    educacion:'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><ellipse cx="20" cy="13" rx="10" ry="7" stroke="white" stroke-width="2"/><path d="M10 20c0 6 4 10 10 10s10-4 10-10" stroke="white" stroke-width="2"/><path d="M14 26l2 5h8l2-5" stroke="white" stroke-width="1.5"/><circle cx="20" cy="13" r="3" stroke="white" stroke-width="1.5"/><path d="M17 12l1.5 1.5 2.5-2.5" stroke="white" stroke-width="1.2"/></svg>',
+    experiencia:'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><circle cx="14" cy="15" r="5" stroke="white" stroke-width="2"/><circle cx="26" cy="15" r="5" stroke="white" stroke-width="2"/><path d="M7 32c0-5 3-9 7-9M33 32c0-5-3-9-7-9M17 32c0-5 3-9 6-8" stroke="white" stroke-width="1.5"/><path d="M11 6l1.5 3 3.5.5-2.5 2.5.5 3.5L11 14l-3 1.5.5-3.5L6 9.5l3.5-.5z" stroke="white" stroke-width="1.2"/><path d="M28 6l1.5 3 3.5.5-2.5 2.5.5 3.5L28 14l-3 1.5.5-3.5-2.5-2.5 3.5-.5z" stroke="white" stroke-width="1.2"/></svg>',
+    transformacion:'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><rect x="8" y="8" width="10" height="10" rx="2" stroke="white" stroke-width="2"/><rect x="22" y="8" width="10" height="10" rx="2" stroke="white" stroke-width="2"/><rect x="8" y="22" width="10" height="10" rx="2" stroke="white" stroke-width="2"/><rect x="22" y="22" width="10" height="10" rx="2" stroke="white" stroke-width="2"/><path d="M18 13h4M13 18v4M27 18v4M22 27h-4" stroke="white" stroke-width="1.5"/></svg>',
+    sostenibilidad:'<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><circle cx="20" cy="20" r="13" stroke="white" stroke-width="2"/><path d="M7 20h26" stroke="white" stroke-width="1.5"/><path d="M20 7C20 7 12 13 12 20s8 13 8 13" stroke="white" stroke-width="1.5"/><path d="M20 7c0 0 8 6 8 13s-8 13-8 13" stroke="white" stroke-width="1.5"/><path d="M8.5 13.5h23M8.5 26.5h23" stroke="white" stroke-width="1"/></svg>'
+  };
+  lineIds.forEach(function(lid,idx){
+    var lcolor=lineColors[idx];
+    var lname=lineNames[idx];
+    var svg=logroSvgs[lid]||'';
+    var textCol=(lid==='experiencia'||lid==='transformacion'||lid==='expansion'||lid==='sostenibilidad')?'#0F385A':'white';
+    h+='<div onclick="goTo(\''+slideSuffixes[idx].replace('-avance','-logro')+'\')" style="background:'+lcolor+';border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;padding:14px;text-align:center;box-shadow:0 3px 14px rgba(0,0,0,0.12);" onmouseenter="this.style.transform=\'translateY(-4px)\';this.style.boxShadow=\'0 8px 24px rgba(0,0,0,0.22)\'" onmouseleave="this.style.transform=\'translateY(0)\';this.style.boxShadow=\'0 3px 14px rgba(0,0,0,0.12)\'"><div style="width:42px;height:42px">'+svg+'</div><span style="color:'+textCol+';font-size:clamp(9px,0.95vw,12px);font-weight:900;text-transform:uppercase;letter-spacing:0.5px;line-height:1.2">'+(lid==='transformacion'?'TRANSFORMACIÓN':esc(lname.toUpperCase()))+'</span></div>';
+  });
+  h+='</div></div></div>';
+
+  /* ===== LOGRO DETAIL SLIDES ===== */
+  var logroImages={
+    calidad:'./public/img/logros/GP051-_INFOGRAFIAS_CAP_12_CALIDAD_1.jpg',
+    expansion:'./public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EXPANSION.jpg',
+    educacion:'./public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EDUVIDA.jpg',
+    experiencia:'./public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EXPERIENCIA.jpg',
+    transformacion:'./public/img/logros/GP051-_INFOGRAFIAS_CAP_12_TRANSFORMACION_1.jpg',
+    sostenibilidad:'./public/img/logros/GP051-_INFOGRAFIAS_CAP_12_SOSTENIBILIDAD_1.jpg'
+  };
+  lineIds.forEach(function(lid,idx){
+    var lcolor=lineColors[idx];
+    var lname=lineNames[idx];
+    var img=logroImages[lid]||'';
+    var textCol=(lid==='experiencia'||lid==='transformacion'||lid==='expansion'||lid==='sostenibilidad')?'#0F385A':'white';
+    h+='<div class="slide" id="slide-'+slideSuffixes[idx].replace('-avance','-logro')+'" data-title="'+esc(lname)+' – Logros 2025"><div class="sf" style="background:white;display:flex;flex-direction:column;overflow:hidden;">';
+    h+='<div style="background:'+lcolor+';padding:10px 20px;flex-shrink:0"><span style="color:'+textCol+';font-weight:900;font-size:clamp(11px,1.4vw,17px);text-transform:uppercase">'+esc(lname)+' – Logros 2025</span></div>';
+    h+='<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;">';
+    if(img){h+='<img src="'+esc(img)+'" style="max-width:100%;max-height:100%;object-fit:contain">';}
+    else{h+='<div style="text-align:center;color:#888">Infografía no disponible</div>';}
+    h+='</div></div></div>';
+  });
+
+  /* ===== PLANES ===== */
+  h+='<div class="slide" id="slide-planes" data-title="Planes Anuales de Retos"><div class="sf" style="background:white;display:flex;flex-direction:column;">';
+  h+='<div style="background:#0F385A;padding:14px 22px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">📋</span><span style="color:white;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Planes Anuales de Retos</span></div>';
+  h+='<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px 36px;background:#f8fafe"><div style="display:flex;gap:16px;width:100%;max-width:860px">';
+  var planCards=[{id:'reporte',bg:'#1FB2DE',icon:'📊',title:'Reporte Anual<br>Institucional',desc:'Avance y cumplimiento 2022–2024'},{id:'unidad',bg:'#EC0677',icon:'🏢',title:'Unidad – Área',desc:'Cumplimiento por área organizacional'},{id:'lineas-est',bg:'#A6CE38',icon:'🎯',title:'Líneas<br>Estratégicas',desc:'Avance por línea PDI 2025'},{id:'objetivos',bg:'#FBAF17',icon:'✓',title:'Objetivos<br>Estratégicos',desc:'CMI Estratégico institucional'}];
+  planCards.forEach(function(pc){
+    h+='<div onclick="goTo(\''+pc.id+'\')" style="background:'+pc.bg+';border-radius:16px;padding:22px 18px;flex:1;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.14);transition:transform 0.15s;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;min-height:160px" onmouseenter="this.style.transform=\'translateY(-5px)\'" onmouseleave="this.style.transform=\'translateY(0)\'"><div style="background:rgba(255,255,255,0.22);border-radius:12px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-size:1.7em">'+pc.icon+'</div><div style="font-weight:900;color:'+(pc.bg==='#EC0677'?'white':'#0F385A')+';font-size:clamp(10px,1.0vw,13px);text-transform:uppercase;letter-spacing:0.5px;line-height:1.25">'+pc.title+'</div><div style="font-size:0.66em;color:'+(pc.bg==='#EC0677'?'rgba(255,255,255,0.8)':'rgba(15,56,90,0.8)')+';line-height:1.3">'+pc.desc+'</div></div>';
+  });
+  h+='</div></div></div></div>';
+
+  /* ===== REPORTE ===== */
+  h+='<div class="slide" id="slide-reporte" data-title="Reporte Anual Institucional"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+  h+='<div style="background:#1FB2DE;padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">📊</span><span style="color:#0F385A;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Reporte Anual Institucional</span></div>';
+  h+='<div style="flex:1;display:flex;flex-direction:column;padding:20px 28px;gap:16px;justify-content:center">';
+  h+='<div style="display:flex;gap:20px;align-items:flex-end;justify-content:center">';
+  var years=[{anio:2022,pct:96,alt:70,planes:33,color:'#0F385A'},{anio:2023,pct:97,alt:105,planes:55,color:'#A6CE38'},{anio:2024,pct:98,alt:140,planes:83,color:'#1FB2DE'}];
+  years.forEach(function(yr){
+    h+='<div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="color:'+yr.color+';font-weight:900;font-size:0.85em">'+yr.pct+'%</div><div style="width:80px;height:'+yr.alt+'px;background:'+yr.color+';border-radius:10px 10px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px"><span style="color:white;font-weight:900;font-size:0.9em">'+yr.planes+'</span></div><div style="font-weight:700;color:#0F385A;font-size:0.78em">'+yr.anio+'</div><div style="font-size:0.65em;color:#888">'+yr.planes+' planes</div></div>';
+  });
+  h+='</div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">';
+  years.forEach(function(yr){
+    h+='<div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.08);border-top:4px solid '+yr.color+'"><div style="font-size:0.65em;color:#888;font-weight:700;text-transform:uppercase;margin-bottom:6px">'+yr.anio+'</div><div style="font-size:1.8em;font-weight:900;color:'+yr.color+'">'+yr.pct+'%</div><div style="font-size:0.65em;color:#666;margin-top:4px">Cumplimiento global</div><div style="font-size:0.65em;color:#888">'+yr.planes+' planes evaluados</div></div>';
+  });
+  h+='</div></div></div></div>';
+
+  /* ===== UNIDAD ===== */
+  h+='<div class="slide" id="slide-unidad" data-title="Unidad – Área"><div class="sf" style="display:flex;flex-direction:column;background:white;">';
+  h+='<div style="background:#EC0677;padding:13px 22px;flex-shrink:0;display:flex;align-items:center;gap:10px"><span style="font-size:1.3em">🏢</span><span style="color:white;font-weight:900;font-size:clamp(12px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Tablero por Unidad — Área</span></div>';
+  h+='<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:30px;background:#f8fafe"><div style="background:white;border-radius:16px;padding:28px 40px;box-shadow:0 4px 18px rgba(0,0,0,0.08);text-align:center;max-width:560px;border:2px solid #eef2f7"><div style="font-size:3em;margin-bottom:12px">⏳</div><div style="font-weight:900;color:#0F385A;font-size:1.15em;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Información Pendiente</div><div style="color:#666;font-size:0.83em;line-height:1.6">Los tableros de seguimiento por unidad y área estarán disponibles próximamente. Contacte a la Gerencia de Planeación y Gestión.</div></div>';
+  h+='<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">';
+  unidades.forEach(function(u){
+    var col=u.color||'#0F385A';
+    h+='<div style="background:white;border-radius:10px;padding:10px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.07);display:flex;align-items:center;gap:8px;border:2px solid '+col+'20"><div style="background:'+col+';width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1em">🏛️</div><span style="font-size:0.76em;font-weight:700;color:#0F385A">'+esc(u.nombre)+'</span></div>';
+  });
+  h+='</div></div></div></div>';
+
+  /* ===== LINEAS-EST ===== */
+  h+='<div class="slide" id="slide-lineas-est" data-title="Líneas Estratégicas"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+  h+='<div style="background:#A6CE38;padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🎯</span><span style="color:#0F385A;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Líneas Estratégicas — Avance 2025</span></div>';
+  h+='<div style="flex:1;display:flex;flex-direction:column;padding:16px 28px;gap:9px;justify-content:center">';
+  var lineLE=[{id:'sostenibilidad',color:'#A6CE38',icon:'🌿',retos:'42',areas:'29',pct:'89%',pctColor:'#0F385A',bgColor:'#A6CE38'},{id:'calidad',color:'#EC0677',icon:'🏅',retos:'103',areas:'45',pct:'99%',pctColor:'white',bgColor:'#EC0677'},{id:'expansion',color:'#FBAF17',icon:'📈',retos:'40',areas:'23',pct:'95%',pctColor:'#0F385A',bgColor:'#FBAF17'},{id:'experiencia',color:'#1FB2DE',icon:'⭐',retos:'108',areas:'55',pct:'99%',pctColor:'#0F385A',bgColor:'#1FB2DE'},{id:'educacion',color:'#0F385A',icon:'📚',retos:'18',areas:'14',pct:'95%',pctColor:'white',bgColor:'#0F385A'},{id:'transformacion',color:'#15BECE',icon:'⚙️',retos:'63',areas:'35',pct:'86%',pctColor:'#0F385A',bgColor:'#15BECE'}];
+  lineLE.forEach(function(ll){
+    var a=avMap[ll.id]||{};
+    h+='<div style="background:white;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:5px solid '+ll.color+'"><span style="font-size:1.3em">'+ll.icon+'</span><div style="flex:1"><div style="font-weight:900;font-size:0.88em;color:#0F385A">'+esc(lineNameMap[ll.id]||ll.id)+'</div><div style="font-size:0.65em;color:#888;margin-top:1px">'+(a.retos||ll.retos)+' retos · '+(a.areas||ll.areas)+' áreas comprometidas</div></div><div style="background:'+ll.bgColor+';color:'+ll.pctColor+';border-radius:8px;padding:4px 14px;font-weight:900;font-size:0.9em">'+(a.cumplimiento?Math.round(a.cumplimiento)+'%':ll.pct)+'</div></div>';
+  });
+  h+='</div></div></div>';
+
+  /* ===== OBJETIVOS ===== */
+  h+='<div class="slide" id="slide-objetivos" data-title="Objetivos Estratégicos"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+  h+='<div style="background:#FBAF17;padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🎯</span><span style="color:#0F385A;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Objetivos Estratégicos — Cumplimiento 2025</span></div>';
+  h+='<div style="flex:1;overflow-y:auto;padding:14px 22px;display:flex;flex-direction:column;gap:7px">';
+  obj.forEach(function(o){
+    var real=parseInt(o.real)||0;
+    var color='#A6CE38';
+    if(real>=98)color='#A6CE38';
+    else if(real>=90)color='#1FB2DE';
+    else if(real>=80)color='#FBAF17';
+    else color='#EC0677';
+    var textColor=real<80?'white':'#0F385A';
+    if(color==='#EC0677')textColor='white';
+    var linea=o.linea||'';
+    var lc=colorMap[linea]||'#0F385A';
+    h+='<div style="display:flex;align-items:center;gap:10px;background:white;border-radius:9px;padding:8px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.07)"><div style="background:'+lc+';color:white;border-radius:6px;padding:3px 10px;font-weight:900;font-size:0.82em;flex-shrink:0;min-width:46px;text-align:center">'+real+'%</div><div style="font-size:0.76em;color:#333;line-height:1.3">'+esc(o.nombre)+'</div></div>';
+  });
+  h+='</div></div></div>';
+
+  /* ===== PROYECTOS ===== */
+  h+='<div class="slide" id="slide-proyectos" data-title="Proyectos Estratégicos"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
+  h+='<div style="background:#0F385A;padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🗂️</span><span style="color:white;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Proyectos Estratégicos PDI 2025</span></div>';
+  h+='<div style="flex:1;overflow-y:auto;padding:14px 22px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  proy.forEach(function(p){
+    var lc=colorMap[p.linea]||'#0F385A';
+    var ln=lineNameMap[p.linea]||p.linea||'';
+    var avance=parseInt(p.avance)||0;
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:white;border-radius:10px;border-left:4px solid '+lc+';box-shadow:0 1px 5px rgba(0,0,0,0.07);margin-bottom:7px"><span style="font-size:1.1em">📋</span><div style="flex:1"><div style="font-size:0.63em;font-weight:900;color:'+lc+';text-transform:uppercase">'+esc(ln)+'</div><div style="font-size:0.78em;font-weight:700;color:#0F385A">'+esc(p.nombre)+'</div></div><div style="background:'+lc+';color:white;border-radius:16px;padding:2px 9px;font-size:0.72em;font-weight:900">'+avance+'%</div></div>';
+  });
+  h+='</div></div></div></div>';
+
+  /* ===== BALANCE ===== */
+  h+='<div class="slide" id="slide-balance" data-title="Balance Institucional 2025"><div class="sf" style="display:flex;flex-direction:column;background:white;">';
+  h+='<div style="background:#0F385A;padding:13px 22px;flex-shrink:0;display:flex;align-items:center;gap:12px"><img src="./public/img/brand/logo-poli.jpg" style="height:28px"><span style="color:white;font-weight:900;font-size:clamp(12px,1.7vw,24px);text-transform:uppercase;letter-spacing:2px">Cierre Año 2025</span></div>';
+  h+='<div style="flex:1;display:flex;align-items:center;justify-content:center;gap:28px;padding:22px 40px;background:#f8fafe">';
+  h+='<div onclick="window.open(\'https://www.youtube.com/watch?v=2dFsBLSEp7c&t=294s\',\'_blank\')" style="flex:1;max-width:390px;background:white;border-radius:18px;overflow:hidden;cursor:pointer;box-shadow:0 6px 24px rgba(15,56,90,0.14);transition:transform 0.2s;border:2px solid #eef2f7" onmouseenter="this.style.transform=\'scale(1.03)\'" onmouseleave="this.style.transform=\'scale(1)\'"><div style="background:#0F385A;padding:14px 18px;display:flex;align-items:center;gap:10px"><span style="font-size:1.3em">▶️</span><div><div style="color:white;font-weight:900;font-size:0.88em;text-transform:uppercase">Balance Institucional POLI 2025</div><div style="color:#1FB2DE;font-size:0.67em;margin-top:1px">Video oficial — YouTube</div></div></div><div style="height:170px;background:linear-gradient(135deg,#0F385A,#1FB2DE);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div style="width:60px;height:60px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8em;border:3px solid rgba(255,255,255,0.4)">▶</div><div style="color:white;font-size:0.77em;opacity:0.85;letter-spacing:0.8px">Clic para ver en YouTube</div></div><div style="padding:12px 16px;background:white"><div style="font-weight:800;color:#0F385A;font-size:0.83em">Balance Institucional POLI 2025</div><div style="font-size:0.68em;color:#888;margin-top:2px">YouTube · Politécnico Grancolombiano</div></div></div>';
+  h+='<div onclick="window.open(\'https://view.genially.com/67c8bfecb1c4036b16099fe1\',\'_blank\')" style="flex:1;max-width:390px;background:white;border-radius:18px;overflow:hidden;cursor:pointer;box-shadow:0 6px 24px rgba(15,56,90,0.14);transition:transform 0.2s;border:2px solid #eef2f7" onmouseenter="this.style.transform=\'scale(1.03)\'" onmouseleave="this.style.transform=\'scale(1)\'"><div style="background:#1FB2DE;padding:14px 18px;display:flex;align-items:center;gap:10px"><span style="font-size:1.3em">📑</span><div><div style="color:#0F385A;font-weight:900;font-size:0.88em;text-transform:uppercase">Informe de Cierre PDI 2024</div><div style="color:#0F385A;font-size:0.67em;margin-top:1px;opacity:0.8">Planeación y Gestión Institucional</div></div></div><div style="height:170px;background:linear-gradient(135deg,#1FB2DE,#15BECE);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div style="width:60px;height:60px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.8em">📊</div><div style="color:white;font-size:0.77em;opacity:0.9;letter-spacing:0.8px">Clic para abrir en Genially</div></div><div style="padding:12px 16px;background:white"><div style="font-weight:800;color:#0F385A;font-size:0.83em">Informe de Cierre PDI 2024</div><div style="font-size:0.68em;color:#888;margin-top:2px">Genially · Planeación y Gestión Institucional</div></div></div>';
+  h+='</div></div></div>';
+
+  /* ===== ORGULLOSAMENTE POLI ===== */
+  h+='<div class="slide" id="slide-orgullosamente" data-title="Orgullosamente Poli"><div class="sf" style="background:linear-gradient(135deg,#0F385A,#EC0677);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:40px;position:relative">';
+  h+='<img src="./public/img/brand/logo-poli.jpg" style="width:clamp(80px,12vw,160px);height:auto;margin-bottom:8px;filter:brightness(10);opacity:1;position:relative;">';
+  h+='<div style="font-size:clamp(24px,3.6vw,48px);font-weight:900;color:white;letter-spacing:2px;line-height:1.05;position:relative">SOMOS DIFERENTES,<br><span style="color:#FBAF17">#SOMOS POLI.</span></div>';
+  h+='<div style="color:rgba(255,255,255,0.75);font-size:clamp(11px,1.1vw,15px);line-height:1.7;max-width:500px;position:relative">Una institución universitaria que transforma vidas, genera impacto positivo y lidera la educación superior con excelencia, pasión y originalidad.</div>';
+  h+='</div></div>';
+
+  /* ===== MOUNT ===== */
+  document.getElementById('main').insertAdjacentHTML('beforeend',h);
+
+  /* ===== NAVIGATION ===== */
+  var slideHistory=[];
+  var currentSlide='slide-home';
+
+  window.goTo=function(id){
+    var el=document.getElementById('slide-'+id);
+    if(!el)return;
+    slideHistory.push(currentSlide);
+    document.querySelectorAll('.slide.active').forEach(function(s){s.classList.remove('active');});
+    el.classList.add('active');
+    currentSlide='slide-'+id;
+    updateNav();
+  };
+  window.goHome=function(){
+    slideHistory=[];
+    document.querySelectorAll('.slide.active').forEach(function(s){s.classList.remove('active');});
+    document.getElementById('slide-home').classList.add('active');
+    currentSlide='slide-home';
+    updateNav();
+  };
+  window.goBack=function(){
+    if(slideHistory.length===0){goHome();return;}
+    var prev=slideHistory.pop();
+    document.querySelectorAll('.slide.active').forEach(function(s){s.classList.remove('active');});
+    document.getElementById(prev).classList.add('active');
+    currentSlide=prev;
+    updateNav();
+  };
+  function updateNav(){
+    document.getElementById('btn-home').disabled=(currentSlide==='slide-home');
+    document.getElementById('btn-back').disabled=(slideHistory.length===0);
+  }
+  window.togglePestel=function(btn){
+    var clicked=btn.nextElementSibling;
+    document.querySelectorAll('#slide-pestel .pestel-body').forEach(function(el){
+      if(el!==clicked)el.style.display='none';
+    });
+    clicked.style.display=clicked.style.display==='none'?'block':'none';
+  };
+  window.toggleLogros=function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    var btn=el.previousElementSibling;
+    el.style.display=el.style.display==='none'?'block':'none';
+    if(btn)btn.querySelector('span:last-child').textContent=el.style.display==='none'?'▼':'▲';
+  };
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape')goBack();
+    if(e.key==='h'||e.key==='H')goHome();
+  });
+
+  /* ===== SET HOME TITLES ===== */
+  if(cfg.nombre)document.getElementById('home-title').textContent=cfg.nombre;
+  if(cfg.subtitulo)document.getElementById('home-subtitle').textContent=cfg.subtitulo;
+
+})();
+</script>
+
+<script>
+(function() {
+  function waitForThree(cb) {
+    if(window.THREE) cb();
+    else setTimeout(function(){ waitForThree(cb); }, 50);
+  }
+  waitForThree(function() {
+    var wrap = document.getElementById('esfera3d');
+    if(!wrap) return;
+    var W = wrap.clientWidth || 150;
+    var H = wrap.clientHeight || 150;
+
+    var scene    = new THREE.Scene();
+    var camera   = new THREE.PerspectiveCamera(42, W/H, 0.1, 100);
+    camera.position.z = 3.8;
+
+    var renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    wrap.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 2.2));
+    var dl = new THREE.DirectionalLight(0xffffff, 2.4);
+    dl.position.set(4,5,6);
+    scene.add(dl);
+    var dl2 = new THREE.DirectionalLight(0xffffff, 1.2);
+    dl2.position.set(-4,-2,4);
+    scene.add(dl2);
+
+    var grupo = new THREE.Group();
+    scene.add(grupo);
+    grupo.rotation.x = -0.18;
+
+    var geo = new THREE.SphereGeometry(1.4, 128, 64);
+    var mat = new THREE.MeshStandardMaterial({color:0xd0d0d0, roughness:0.22, metalness:0.35});
+    grupo.add(new THREE.Mesh(geo, mat));
+
+    var geoB = new THREE.SphereGeometry(1.42, 128, 64);
+    var matB = new THREE.MeshPhysicalMaterial({
+      color:0xffffff, transparent:true, opacity:0.14,
+      roughness:0.04, metalness:0, clearcoat:1, clearcoatRoughness:0.04
+    });
+    grupo.add(new THREE.Mesh(geoB, matB));
+
+    var loader = new THREE.TextureLoader();
+    var texF = loader.load('./public/img/brand/sphere-front.png');
+    texF.colorSpace = THREE.SRGBColorSpace;
+    var discF = new THREE.Mesh(
+      new THREE.CircleGeometry(0.92, 128),
+      new THREE.MeshBasicMaterial({map:texF, transparent:true, side:THREE.DoubleSide})
+    );
+    discF.position.z = 1.42;
+    grupo.add(discF);
+
+    var texB = loader.load('./public/img/brand/sphere-back.png');
+    texB.colorSpace = THREE.SRGBColorSpace;
+    var discB = new THREE.Mesh(
+      new THREE.CircleGeometry(0.80, 128),
+      new THREE.MeshBasicMaterial({map:texB, transparent:true, side:THREE.DoubleSide})
+    );
+    discB.position.z = -1.42;
+    discB.rotation.y = Math.PI;
+    grupo.add(discB);
+
+    var geoS = new THREE.CircleGeometry(1.3, 64);
+    var matS = new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.15});
+    var sombra = new THREE.Mesh(geoS, matS);
+    sombra.rotation.x = -Math.PI/2;
+    sombra.position.set(0, -1.75, -0.2);
+    sombra.scale.set(1.4, 0.3, 1);
+    scene.add(sombra);
+
+    (function animar() {
+      requestAnimationFrame(animar);
+      grupo.rotation.y += 0.010;
+      renderer.render(scene, camera);
+    })();
+
+    new ResizeObserver(function() {
+      var w = wrap.clientWidth, h = wrap.clientHeight;
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    }).observe(wrap);
+  });
+})();
+</script>
+</div>
+</body></html>

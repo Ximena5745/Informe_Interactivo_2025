@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDI 2025 — Simple</title>
+<script src="./vendor/xlsx.full.min.js"></script>
+<style>
+body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f5f5f5;color:#222}
+.box{max-width:900px;margin:0 auto;background:#fff;padding:24px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+h1{color:#0F385A;margin:0 0 8px}
+h2{color:#0F385A;border-bottom:2px solid #0F385A;padding-bottom:4px;margin:20px 0 12px}
+#status{padding:10px;background:#fff3cd;border:1px solid #fbaF17;border-radius:6px;margin:12px 0;font-family:monospace;font-size:13px;white-space:pre-wrap;max-height:200px;overflow:auto}
+#kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+.kpi{padding:12px;border:2px solid #0F385A;border-radius:6px;background:#fff}
+.kpi__label{font-size:10px;text-transform:uppercase;color:#666}
+.kpi__value{font-size:24px;font-weight:bold;color:#0F385A}
+.kpi__detail{font-size:11px;color:#888;margin-top:4px}
+.btn{display:inline-block;padding:10px 18px;background:#1FB2DE;color:#0F385A;border:none;border-radius:6px;cursor:pointer;font-weight:bold;margin:4px}
+.btn:hover{background:#A6CE38}
+ul#slides{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+ul#slides li{padding:6px 10px;background:#f0f0f0;border-left:4px solid #0F385A;font-size:12px}
+code{background:#f0f0f0;padding:1px 5px;border-radius:3px;font-family:Consolas,monospace}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>Informe de Cierre PDI 2025 — Vista Simple</h1>
+<p>Esta es una versión minimalista que <strong>sí funciona</strong> en file:// y http:// sin dependencias de módulos.</p>
+
+<h2>1. Subir archivos XLSX</h2>
+<input type="file" id="fileInput" multiple accept=".xlsx">
+<button class="btn" id="loadDemo">Cargar demo (si no tienes XLSX)</button>
+<div id="status">Listo. Esperando archivos...</div>
+
+<h2>2. Cumplimiento por línea estratégica</h2>
+<div id="kpis"></div>
+
+<h2>3. Slides del informe</h2>
+<ul id="slides"></ul>
+
+<h2>4. Diagnóstico</h2>
+<pre id="diag" style="background:#f8f8f8;padding:10px;border-radius:4px;font-size:11px;overflow:auto">protocolo: <span id="diagProto"></span>
+XLSX global: <span id="diagXlsx"></span>
+userAgent: <span id="diagUA"></span></pre>
+</div>
+
+<script>
+document.getElementById('diagProto').textContent = location.protocol;
+document.getElementById('diagXlsx').textContent = typeof XLSX;
+document.getElementById('diagUA').textContent = navigator.userAgent;
+
+var SOURCES = {
+  'config':     { hoja: 'config',     label: 'Configuracion' },
+  'navegacion': { hoja: 'navegacion', label: 'Navegacion' },
+  'avance':     { hoja: 'avance',     label: 'Avance' },
+  'foda':       { hoja: 'foda',       label: 'FODA' },
+  'pestel':     { hoja: 'pestel',     label: 'PESTEL' },
+  'proyectos':  { hoja: 'proyectos',  label: 'Proyectos' },
+  'objetivos':  { hoja: 'objetivos',  label: 'Objetivos CMI' },
+  'reportes':   { hoja: 'historial',  label: 'Reportes' },
+  'unidades':   { hoja: 'unidades',   label: 'Unidades' }
+};
+
+var data = {};
+var log = [];
+function logMsg(msg) {
+  log.push(msg);
+  document.getElementById('status').textContent = log.join('\n');
+  console.log(msg);
+}
+
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  var files = Array.from(e.target.files);
+  logMsg('Seleccionados ' + files.length + ' archivo(s)');
+  var pending = files.length;
+  files.forEach(function(file) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var bytes = new Uint8Array(ev.target.result);
+        var wb = XLSX.read(bytes, { type: 'array' });
+        // Detectar id por nombre
+        var id = null;
+        for (var k in SOURCES) {
+          if (file.name.toLowerCase().indexOf(k + '.xlsx') >= 0) { id = k; break; }
+        }
+        if (!id) {
+          logMsg('  ' + file.name + ' -> id no reconocido, saltando');
+        } else {
+          var src = SOURCES[id];
+          var sheetName = wb.Sheets[src.hoja] ? src.hoja : wb.SheetNames[0];
+          var rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { defval: '' });
+          data[id] = rows;
+          logMsg('  ' + file.name + ' -> ' + id + ' (' + rows.length + ' filas, hoja "' + sheetName + '")');
+        }
+      } catch (err) {
+        logMsg('  ' + file.name + ' -> ERROR: ' + err.message);
+      }
+      pending--;
+      if (pending === 0) renderAll();
+    };
+    reader.onerror = function() { logMsg('  ' + file.name + ' -> error de lectura'); pending--; if (pending === 0) renderAll(); };
+    reader.readAsArrayBuffer(file);
+  });
+});
+
+document.getElementById('loadDemo').addEventListener('click', function() {
+  data.config = [
+    { clave: 'nombre', valor: 'Informe de Cierre PDI 2025 (demo)' },
+    { clave: 'subtitulo', valor: 'Planeacion y Gestion Institucional' },
+    { clave: 'versionInforme', valor: 'demo' }
+  ];
+  data.avance = [
+    { nombre: 'Calidad', color: '#EC0677', cumplimiento: 99, retos: 103, areas: 45 },
+    { nombre: 'Educacion', color: '#0F385A', cumplimiento: 95, retos: 18, areas: 14 },
+    { nombre: 'Expansion', color: '#FBAF17', cumplimiento: 95, retos: 40, areas: 23 },
+    { nombre: 'Experiencia', color: '#1FB2DE', cumplimiento: 99, retos: 108, areas: 55 },
+    { nombre: 'Transformacion', color: '#15BECE', cumplimiento: 86, retos: 63, areas: 35 },
+    { nombre: 'Sostenibilidad', color: '#A6CE38', cumplimiento: 89, retos: 42, areas: 29 }
+  ];
+  data.navegacion = [
+    { id: 'home', titulo: 'Inicio', layout: 'home', colorHeader: '#0F385A' },
+    { id: 'avances', titulo: 'Avance General', layout: 'avances' },
+    { id: 'cal-avance', titulo: 'Calidad', layout: 'linea', lineaId: 'calidad', colorHeader: '#EC0677' },
+    { id: 'edu-avance', titulo: 'Educacion', layout: 'linea', lineaId: 'educacion', colorHeader: '#0F385A' },
+    { id: 'foda', titulo: 'FODA', layout: 'foda' },
+    { id: 'pestel', titulo: 'PESTEL', layout: 'pestel' }
+  ];
+  logMsg('Datos demo cargados. Sube XLSX reales para reemplazarlos.');
+  renderAll();
+});
+
+function renderAll() {
+  // KPIs
+  var kpis = document.getElementById('kpis');
+  kpis.innerHTML = '';
+  if (data.avance && data.avance.length) {
+    data.avance.forEach(function(a) {
+      var div = document.createElement('div');
+      div.className = 'kpi';
+      div.style.borderColor = a.color || '#0F385A';
+      div.innerHTML = '<div class="kpi__label">' + (a.nombre || a.id) + '</div>' +
+        '<div class="kpi__value" style="color:' + (a.color || '#0F385A') + '">' + (a.cumplimiento || 0) + '%</div>' +
+        '<div class="kpi__detail">' + (a.retos || 0) + ' retos &middot; ' + (a.areas || 0) + ' areas</div>';
+      kpis.appendChild(div);
+    });
+  } else {
+    kpis.innerHTML = '<p style="color:#888">Sube <code>avance.xlsx</code> para ver KPIs.</p>';
+  }
+  // Slides
+  var ul = document.getElementById('slides');
+  ul.innerHTML = '';
+  if (data.navegacion && data.navegacion.length) {
+    data.navegacion.forEach(function(s) {
+      var li = document.createElement('li');
+      if (s.colorHeader) li.style.borderLeftColor = s.colorHeader;
+      li.innerHTML = '<strong>' + s.titulo + '</strong><br><small>' + s.layout + (s.lineaId ? ' · ' + s.lineaId : '') + '</small>';
+      ul.appendChild(li);
+    });
+  } else {
+    ul.innerHTML = '<li>Sube <code>navegacion.xlsx</code> para ver slides.</li>';
+  }
+  logMsg('Renderizado. Datos cargados: ' + Object.keys(data).join(', '));
+}
+
+// Auto-load from cache if available
+if (typeof indexedDB !== 'undefined') {
+  var req = indexedDB.open('pdi2025-cache', 1);
+  req.onsuccess = function() {
+    var db = req.result;
+    if (!db.objectStoreNames.contains('sources')) return;
+    var tx = db.transaction('sources', 'readonly');
+    var all = tx.objectStore('sources').getAll();
+    all.onsuccess = function() {
+      if (all.result && all.result.length) {
+        all.result.forEach(function(e) { data[e.key] = e.data; });
+        logMsg('Cargados ' + all.result.length + ' archivos desde cache IDB.');
+        renderAll();
+      }
+    };
+  };
+}
+</script>
+</body>
+</html>

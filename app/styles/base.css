@@ -1,0 +1,125 @@
+/* ==========================================================================
+   base.css — Reset + elementos base + accesibilidad
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  min-height: 0;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  color: var(--color-cyan);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+/* Foco visible para teclado (a11y WCAG 2.4.7) */
+:focus-visible {
+  outline: 3px solid var(--color-cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link */
+.visually-hidden,
+.skip-link:not(:focus) {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* Scrollbar estilizado */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 56, 90, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 56, 90, 0.5);
+}
+
+/* Slide container */
+main#main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.slide-frame {
+  width: var(--content-max);
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .slide-frame {
+    width: 100vw;
+  }
+}
+
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+}
+
+/* Animación de entrada de slide */
+@keyframes slide-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.slide-enter {
+  animation: slide-in var(--dur-base) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-enter { animation: none; }
+}
+
+/* Utilidades */
+.text-center { text-align: center; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.5px; }
+.visually-hidden-global { position: absolute; left: -10000px; }

@@ -1,0 +1,17 @@
+/* ==========================================================================
+   PDI 2025 — Sistema de Diseño
+   ==========================================================================
+   - Solo tokens (variables CSS) y reglas base.
+   - Sin componentes aquí: ver components/ para BEM/utility.
+   - Cumple WCAG 2.1 AA (contraste verificado en paleta Poli).
+   ========================================================================== */
+
+@import './tokens.css';
+@import './base.css';
+@import './components/sidebar.css';
+@import './components/home.css';
+@import './components/card.css';
+@import './components/gauge.css';
+@import './components/header.css';
+@import './components/skip-link.css';
+@import './components/picker.css';

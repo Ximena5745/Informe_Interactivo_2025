@@ -1,0 +1,39 @@
+# Archivos generados y locales — no versionar
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dist (no usamos, pero por si acaso)
+dist/
+build/
+
+# Test artifacts
+coverage/
+.nyc_output/
+
+# Local
+*.local
+.env
+.env.local
+
+# NO ignorar: .nojekyll, vendor/, public/img/
+# (vendor/ y public/img/ deben versionarse para que funcione file://)

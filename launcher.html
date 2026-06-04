@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Informe de Cierre PDI 2025 — Launcher file://">
+<title>Informe de Cierre PDI 2025 — Launcher</title>
+<link rel="icon" type="image/svg+xml" href="./public/img/brand/favicon.svg">
+<script defer src="./vendor/xlsx.full.min.js?v=3"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;font-family:Montserrat,system-ui,-apple-system,sans-serif;background:#0a2540;color:#fff;overflow-x:hidden}
+#vstamp{position:fixed;bottom:8px;right:12px;padding:4px 10px;background:#0F385A;color:#1FB2DE;font:11px/1.2 ui-monospace,Consolas,monospace;border-radius:6px;z-index:99999;opacity:.7;pointer-events:none}
+.picker{min-height:100vh;padding:32px 20px;background:linear-gradient(135deg,#0F385A 0%,#15BECE 100%);display:flex;flex-direction:column;gap:24px}
+.picker__header{text-align:center;max-width:720px;margin:0 auto}
+.picker__header h1{font-size:32px;font-weight:900;margin:0 0 8px;letter-spacing:-.5px}
+.picker__lead{font-size:15px;opacity:.9;line-height:1.5;margin:0}
+.picker__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-width:1100px;width:100%;margin:0 auto}
+.picker__card{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.15);border-radius:12px;display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:12px;padding:16px;cursor:pointer;transition:background .2s,border-color .2s;color:#fff}
+.picker__card:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35)}
+.picker__card.is-loaded{background:rgba(166,206,56,.12);border-color:rgba(166,206,56,.6)}
+.picker__icon{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;font-size:24px;font-weight:900;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2)}
+.picker__icon--ok{background:#A6CE38;color:#0F385A;border-color:#A6CE38}
+.picker__icon--pending{background:rgba(255,255,255,.08);color:#fff}
+.picker__meta{display:flex;flex-direction:column;gap:2px;min-width:0}
+.picker__name{font-weight:700;font-size:15px;line-height:1.2}
+.picker__desc{font-size:12px;opacity:.75;font-family:ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.picker__badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.picker__badge--ok{background:#A6CE38;color:#0F385A}
+.picker__badge--pending{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.picker__input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.picker__input:focus-visible+.picker__card{outline:3px solid #1FB2DE;outline-offset:2px}
+.picker__footer{color:#fff;max-width:720px;margin:0 auto;text-align:center}
+.picker__hint{font-size:13px;opacity:.85;line-height:1.5;margin:0}
+.picker__details{margin-top:12px;background:rgba(0,0,0,.2);border-radius:8px;padding:12px;text-align:left}
+.picker__details summary{cursor:pointer;font-weight:700;user-select:none;list-style:none}
+.picker__details summary::-webkit-details-marker{display:none}
+.picker__details summary::before{content:'▸ ';display:inline-block}
+.picker__details[open] summary::before{content:'▾ '}
+.picker__details p{margin:8px 0 0;font-size:13px;line-height:1.5;opacity:.9}
+.picker__details code{background:rgba(255,255,255,.12);padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;font-size:.9em}
+.picker__btn{appearance:none;border:2px solid #1FB2DE;background:transparent;color:#1FB2DE;font:600 14px/1 inherit;padding:10px 18px;border-radius:8px;cursor:pointer;margin-top:14px}
+.picker__btn:hover{background:#1FB2DE;color:#0F385A}
+.picker__btn--primary{background:#1FB2DE;color:#0F385A}
+.picker__btn--primary:hover{background:#A6CE38;border-color:#A6CE38;color:#0F385A}
+#home{display:none;padding:24px 20px;max-width:1100px;margin:0 auto}
+.home-header{background:#0F385A;color:#fff;padding:24px;border-radius:12px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.home-header img{width:64px;height:64px;border-radius:8px;object-fit:contain;background:#fff;padding:6px}
+.home-header h1{margin:0;font-size:24px;font-weight:900}
+.home-header p{margin:4px 0 0;opacity:.85;font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:10px;padding:16px;border-top:4px solid #0F385A;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.kpi__label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#666;margin-bottom:6px}
+.kpi__value{font-size:32px;font-weight:900;line-height:1;color:#0F385A}
+.kpi__detail{font-size:12px;color:#888;margin-top:6px}
+.section-title{font-size:18px;font-weight:800;border-bottom:3px solid #0F385A;padding-bottom:6px;margin:24px 0 12px;color:#fff}
+.slides-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.slides-grid li{background:rgba(255,255,255,.95);padding:10px 14px;border-radius:8px;border-left:4px solid #0F385A;font-size:13px}
+.slides-grid li strong{display:block;color:#0F385A;font-size:14px}
+.slides-grid li small{color:#888}
+.slides-grid li.is-extra{border-left-color:#15BECE}
+</style>
+</head>
+<body>
+<div id="vstamp">v3-launcher</div>
+<div id="picker" class="picker"></div>
+<main id="home"></main>
+
+<script>
+(function(){
+'use strict';
+
+var SOURCES = [
+  { id:'config',     nombre:'Configuracion institucional', archivo:'data/config/config.xlsx',        hoja:'config',     obligatorio:true,  desc:'Branding, paleta, atajos' },
+  { id:'navegacion', nombre:'Mapa de navegacion',           archivo:'data/navegacion/navegacion.xlsx', hoja:'navegacion', obligatorio:true,  desc:'Lista de 27 slides' },
+  { id:'avance',     nombre:'Avance de cumplimiento',       archivo:'data/avance/avance.xlsx',         hoja:'avance',     obligatorio:true,  desc:'6 lineas estrategicas' },
+  { id:'foda',       nombre:'FODA institucional',           archivo:'data/foda/foda.xlsx',             hoja:'foda',       obligatorio:false, desc:'FODA 2025' },
+  { id:'pestel',     nombre:'Analisis PESTEL',              archivo:'data/pestel/pestel.xlsx',         hoja:'pestel',     obligatorio:false, desc:'PESTEL 2025' },
+  { id:'proyectos',  nombre:'Maestro de proyectos',         archivo:'data/proyectos/proyectos.xlsx',   hoja:'proyectos',  obligatorio:true,  desc:'Proyectos estrategicos' },
+  { id:'objetivos',  nombre:'Objetivos CMI',                archivo:'data/objetivos/objetivos.xlsx',   hoja:'objetivos',  obligatorio:true,  desc:'12 objetivos estrategicos' },
+  { id:'reportes',   nombre:'Reportes anuales',             archivo:'data/reportes/reportes.xlsx',     hoja:'historial',  obligatorio:false, desc:'Historico 2022-2024' },
+  { id:'unidades',   nombre:'Unidades organizacionales',    archivo:'data/unidades/unidades.xlsx',     hoja:'unidades',   obligatorio:false, desc:'Organigrama' }
+];
+
+// ── IndexedDB ────────────────────────────────────────────────
+var DB='pdi2025-cache', VER=1, ST='sources';
+function idb(){
+  return new Promise(function(res,rej){
+    var r=indexedDB.open(DB,VER);
+    r.onupgradeneeded=function(e){var d=e.target.result;if(!d.objectStoreNames.contains(ST))d.createObjectStore(ST,{keyPath:'key'})};
+    r.onsuccess=function(){res(r.result)};
+    r.onerror=function(){rej(r.error)};
+  });
+}
+function idbGet(k){return idb().then(function(d){return new Promise(function(res,rej){var t=d.transaction(ST,'readonly');var r=t.objectStore(ST).get(k);r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})})}
+function idbSet(e){return idb().then(function(d){return new Promise(function(res,rej){var t=d.transaction(ST,'readwrite');var r=t.objectStore(ST).put(e);r.onsuccess=function(){res()};r.onerror=function(){rej(r.error)}})})}
+function idbDel(k){return idb().then(function(d){return new Promise(function(res,rej){var t=d.transaction(ST,'readwrite');var r=t.objectStore(ST).delete(k);r.onsuccess=function(){res()};r.onerror=function(){rej(r.error)}})})}
+function idbKeys(){return idb().then(function(d){return new Promise(function(res,rej){var t=d.transaction(ST,'readonly');var r=t.objectStore(ST).getAllKeys();r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}})})}
+
+// ── DOM helpers ──────────────────────────────────────────────
+function el(tag, attrs, kids){
+  var n=document.createElement(tag);
+  if(attrs)for(var k in attrs){
+    if(k==='class')n.className=attrs[k];
+    else if(k==='html')n.innerHTML=attrs[k];
+    else if(k==='on'){} // handled below
+    else n.setAttribute(k,attrs[k]);
+  }
+  if(attrs&&attrs.on)for(var ev in attrs.on)n.addEventListener(ev,attrs.on[ev]);
+  if(kids)for(var i=0;i<kids.length;i++)if(kids[i])n.appendChild(typeof kids[i]==='string'?document.createTextNode(kids[i]):kids[i]);
+  return n;
+}
+
+// ── Parse XLSX ───────────────────────────────────────────────
+function parseXlsx(file){
+  return new Promise(function(resolve,reject){
+    if(typeof XLSX==='undefined'){reject(new Error('SheetJS no esta cargado. Verifica vendor/xlsx.full.min.js'));return}
+    var reader=new FileReader();
+    reader.onload=function(e){
+      try{
+        var data=new Uint8Array(e.target.result);
+        var wb=XLSX.read(data,{type:'array'});
+        var src=SOURCES.find(function(s){return file.name.toLowerCase().indexOf(s.id+'.xlsx')>=0})||{id:file.name.replace(/\.xlsx$/i,''),hoja:null};
+        var sheetName=src.hoja&&wb.Sheets[src.hoja]?src.hoja:wb.SheetNames[0];
+        var rows=XLSX.utils.sheet_to_json(wb.Sheets[sheetName],{defval:''});
+        resolve({id:src.id,rows:rows,all:wb});
+      }catch(err){reject(err)}
+    };
+    reader.onerror=function(){reject(reader.error)};
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// ── FilePicker render ────────────────────────────────────────
+function renderPicker(){
+  var root=document.getElementById('picker');
+  root.innerHTML='';
+  var header=el('div',{class:'picker__header'},[
+    el('h1',null,['Informe de Cierre PDI 2025']),
+    el('p',{class:'picker__lead'},['Estas abriendo el informe directamente desde tu disco. Sube los archivos Excel para visualizar el contenido. Se guardaran en cache local.'])
+  ]);
+  var grid=el('div',{class:'picker__grid'});
+
+  Promise.all(SOURCES.map(function(s){return idbGet(s.id).then(function(e){return {s:s,cached:!!(e&&e.data)}})}))
+    .then(function(rows){
+      rows.forEach(function(r){grid.appendChild(cardFor(r.s,r.cached))});
+      var requiredMissing=rows.some(function(r){return r.s.obligatorio&&!r.cached});
+      var anyLoaded=rows.some(function(r){return r.cached});
+
+      var footer=el('div',{class:'picker__footer'},[
+        el('p',{class:'picker__hint'},['Selecciona los 9 archivos o solo los obligatorios (marcados con *). Los obligatorios son: Configuracion, Navegacion, Avance, Proyectos y Objetivos.']),
+        el('div',null,[
+          el('button',{class:'picker__btn',on:{click:function(){
+            if(confirm('Esto borra todos los XLSX guardados en este navegador. Continuar?')){
+              Promise.all(SOURCES.map(function(s){return idbDel(s.id)})).then(function(){renderPicker()});
+            }
+          }}},['Limpiar cache'])
+        ]),
+        el('details',{class:'picker__details'},[
+          el('summary',null,['Como genero los archivos Excel?']),
+          el('p',{html:'Ejecuta <code>python scripts/generar_xlsx.py</code> desde la raiz del proyecto, o edita los XLSX en <code>data/&lt;fuente&gt;/</code>.'})
+        ])
+      ]);
+      if(anyLoaded&&!requiredMissing){
+        var btn=el('button',{class:'picker__btn picker__btn--primary',on:{click:function(){renderHome()}}},['Ir al informe >>']);
+        footer.insertBefore(btn,footer.firstChild.nextSibling);
+      }
+      root.appendChild(header);
+      root.appendChild(grid);
+      root.appendChild(footer);
+    });
+
+  function cardFor(src,cached){
+    var input=el('input',{type:'file',accept:'.xlsx',class:'picker__input','data-src':src.id,'aria-label':'Subir '+src.nombre,
+      on:{change:onPick}});
+    var icon=el('div',{class:'picker__icon '+(cached?'picker__icon--ok':'picker__icon--pending')},[cached?'OK':'...']);
+    var badge=el('span',{class:'picker__badge '+(cached?'picker__badge--ok':'picker__badge--pending')},[cached?'En cache':(src.obligatorio?'Requerido *':'Opcional')]);
+    var meta=el('div',{class:'picker__meta'},[
+      el('div',{class:'picker__name'},[src.nombre]),
+      el('div',{class:'picker__desc'},[src.archivo])
+    ]);
+    var card=el('label',{class:'picker__card'+(cached?' is-loaded':'')},[icon,meta,badge,input]);
+    return card;
+  }
+
+  function onPick(e){
+    var input=e.target;
+    var file=input.files&&input.files[0];
+    if(!file)return;
+    var card=input.closest('.picker__card');
+    var iconEl=card.querySelector('.picker__icon');
+    iconEl.textContent='...';
+    parseXlsx(file).then(function(parsed){
+      return idbSet({key:parsed.id,data:parsed.rows,ts:Date.now()});
+    }).then(function(){
+      renderPicker();
+    }).catch(function(err){
+      alert('Error: '+err.message);
+      renderPicker();
+    });
+  }
+}
+
+// ── Home render ──────────────────────────────────────────────
+function renderHome(){
+  var main=document.getElementById('home');
+  document.getElementById('picker').style.display='none';
+  main.style.display='block';
+  Promise.all(SOURCES.map(function(s){return idbGet(s.id).then(function(e){return {s:s,data:e?e.data:null}})}))
+    .then(function(all){
+      var byId={};
+      all.forEach(function(x){byId[x.s.id]=x.data});
+      paintHome(byId,all);
+    });
+}
+
+function paintHome(byId,all){
+  var main=document.getElementById('home');
+  var cfg=byId.config||[];
+  var nav=byId.navegacion||[];
+  var av=byId.avance||[];
+  var cfgMap={};
+  cfg.forEach(function(r){cfgMap[r.clave]=r.valor});
+
+  var html='<div class="home-header">';
+  html+='<img src="./public/img/brand/logo-poli.jpg" alt="Poli" onerror="this.style.display=\'none\'">';
+  html+='<div><h1>'+(cfgMap.nombre||'Informe de Cierre PDI 2025')+'</h1>';
+  html+='<p>'+(cfgMap.subtitulo||'Planeacion y Gestion Institucional')+' &middot; v'+(cfgMap.versionInforme||'1.0.0')+'</p></div></div>';
+
+  if(av.length){
+    html+='<h2 class="section-title">Avance por linea estrategica</h2>';
+    html+='<div class="kpis">';
+    av.forEach(function(a){
+      html+='<div class="kpi" style="border-top-color:'+(a.color||'#0F385A')+'">';
+      html+='<div class="kpi__label">'+a.nombre+'</div>';
+      html+='<div class="kpi__value" style="color:'+(a.color||'#0F385A')+'">'+a.cumplimiento+'%</div>';
+      html+='<div class="kpi__detail">'+a.retos+' retos &middot; '+a.areas+' areas</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+
+  if(nav.length){
+    html+='<h2 class="section-title">Slides del informe ('+nav.length+')</h2>';
+    html+='<ul class="slides-grid">';
+    nav.forEach(function(s){
+      var extra=!s.layout||['home','linea','logro'].indexOf(s.layout)<0;
+      html+='<li class="'+(extra?'is-extra':'')+'">';
+      html+='<strong>'+s.titulo+'</strong>';
+      html+='<small>'+s.layout+(s.lineaId?' · '+s.lineaId:'')+(s.colorHeader?' · <span style="display:inline-block;width:10px;height:10px;background:'+s.colorHeader+';border-radius:50%;vertical-align:middle"></span>':'')+'</small>';
+      html+='</li>';
+    });
+    html+='</ul>';
+  }
+
+  // Missing files notice
+  var missing=all.filter(function(x){return x.s.obligatorio&&!x.data});
+  if(missing.length){
+    html+='<div style="margin-top:20px;padding:14px;background:rgba(236,6,119,.15);border:1px solid #EC0677;border-radius:8px;color:#fff">';
+    html+='<strong>Faltan archivos obligatorios:</strong> ';
+    html+=missing.map(function(x){return x.s.nombre}).join(', ');
+    html+='. <a href="#" id="back-link" style="color:#1FB2DE;text-decoration:underline">Volver al cargador</a>.';
+    html+='</div>';
+  }
+
+  // Volver
+  html+='<div style="margin-top:24px;text-align:center">';
+  html+='<button id="back-btn" class="picker__btn">Volver al cargador</button>';
+  html+='<a href="./tests/index.html" class="picker__btn" style="margin-left:8px">Ejecutar tests</a>';
+  html+='<a href="./serve.bat" class="picker__btn" style="margin-left:8px">Descargar serve.bat</a>';
+  html+='</div>';
+
+  main.innerHTML=html;
+  var back=document.getElementById('back-btn');
+  if(back)back.onclick=function(){
+    document.getElementById('home').style.display='none';
+    document.getElementById('picker').style.display='block';
+    renderPicker();
+  };
+  var bl=document.getElementById('back-link');
+  if(bl)bl.onclick=function(e){e.preventDefault();document.getElementById('back-btn').click()};
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+function boot(){
+  if(typeof XLSX==='undefined'){
+    var wait=0;
+    var iv=setInterval(function(){
+      if(typeof XLSX!=='undefined'||wait>50){clearInterval(iv);if(typeof XLSX==='undefined'){document.getElementById('picker').innerHTML='<div style="padding:20px;color:#fff">Error: SheetJS no cargo. Verifica que <code>vendor/xlsx.full.min.js</code> exista.</div>'}else{renderPicker()}}
+      wait++;
+    },50);
+  } else {
+    renderPicker();
+  }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+else boot();
+})();
+</script>
+</body>
+</html>

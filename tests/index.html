@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tests — PDI 2025</title>
+    <link rel="icon" type="image/svg+xml" href="../public/img/brand/favicon.svg" />
+    <link rel="stylesheet" href="../app/styles/tokens.css" />
+    <link rel="stylesheet" href="../app/styles/base.css" />
+    <style>
+      body { font-family: Montserrat, system-ui, sans-serif; padding: 2rem; max-width: 960px; margin: 0 auto; }
+      h1 { color: #0F385A; }
+      .summary { padding: 1rem; border-radius: 8px; margin-bottom: 2rem; font-size: 1.1rem; font-weight: 700; }
+      .summary.ok    { background: #d6f0a0; color: #0F385A; }
+      .summary.fail  { background: #fbb; color: #EC0677; }
+      .summary.run   { background: #cdeefb; color: #0F385A; }
+      details { margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 6px; }
+      summary { padding: 0.75rem 1rem; background: #f4f7fa; cursor: pointer; font-weight: 600; }
+      details.fail > summary { background: #fdd; }
+      details.ok   > summary { background: #dfd; }
+      ul { margin: 0.5rem 1rem 1rem; padding: 0; list-style: none; }
+      li { padding: 0.4rem 0.6rem; border-bottom: 1px solid #eee; font-family: monospace; }
+      li.pass { color: #2c662d; }
+      li.fail { color: #c00; background: #fee; }
+      li .name { font-weight: 600; }
+      li pre { margin: 0.3rem 0 0; font-size: 0.85em; color: #555; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Tests del Informe de Cierre PDI 2025</h1>
+    <p>
+      Ejecutándose en el navegador. Cada bloque de tests cubre un módulo del dominio o de los servicios.
+      <strong>Total:</strong> <span id="total">…</span> ·
+      <strong>Pasaron:</strong> <span id="passed">0</span> ·
+      <strong>Fallaron:</strong> <span id="failed">0</span>
+    </p>
+    <div id="summary" class="summary run">Ejecutando…</div>
+    <main id="suites"></main>
+
+    <script defer src="../vendor/xlsx.full.min.js"></script>
+    <script type="module" src="./runner.js"></script>
+  </body>
+</html>

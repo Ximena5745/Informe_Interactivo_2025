@@ -1,0 +1,36 @@
+/* Header de slide: barra superior con color de marca. */
+.slide-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  flex-shrink: 0;
+}
+
+.slide-header__title {
+  color: var(--color-text-inverse);
+  font-weight: var(--fw-black);
+  font-size: var(--fs-xl);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.slide-header__title--on-light {
+  color: var(--color-navy);
+}
+
+.slide-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-5);
+  min-height: 0;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-surface);
+}

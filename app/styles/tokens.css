@@ -1,0 +1,92 @@
+/* ==========================================================================
+   tokens.css — Variables de diseño
+   ==========================================================================
+   Fuente única de verdad para colores, espaciado, tipografía, sombras.
+   El contenido se sincroniza con /data/config.json (cargado por JS al inicio).
+   ========================================================================== */
+
+:root {
+  /* Colores institucionales (sincronizados con /data/config.json) */
+  --color-navy: #0F385A;
+  --color-cyan: #1FB2DE;
+  --color-pink: #EC0677;
+  --color-green: #A6CE38;
+  --color-yellow: #FBAF17;
+  --color-teal: #15BECE;
+
+  /* Escala de grises */
+  --color-bg: #f0f4f8;
+  --color-surface: #ffffff;
+  --color-text: #0F385A;
+  --color-text-muted: #4a5a6e;
+  --color-text-inverse: #ffffff;
+  --color-border: #d6dde5;
+  --color-border-strong: #b0b9c4;
+
+  /* Semánticos */
+  --color-success: var(--color-green);
+  --color-warning: var(--color-yellow);
+  --color-danger: var(--color-pink);
+  --color-info: var(--color-cyan);
+
+  /* Tipografía */
+  --font-sans: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  /* Escala tipográfica fluida (clamp) */
+  --fs-xs:  clamp(9px,  0.7vw,  11px);
+  --fs-sm:  clamp(10px, 0.85vw, 13px);
+  --fs-md:  clamp(12px, 1vw,    15px);
+  --fs-lg:  clamp(14px, 1.3vw,  18px);
+  --fs-xl:  clamp(18px, 1.8vw,  24px);
+  --fs-2xl: clamp(22px, 2.5vw,  34px);
+  --fs-3xl: clamp(28px, 3.5vw,  48px);
+
+  /* Espaciado (escala 4 + 8) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(15, 56, 90, 0.08);
+  --shadow-md: 0 3px 14px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow-xl: 0 14px 40px rgba(0, 0, 0, 0.3);
+
+  /* Layout */
+  --sidebar-width: 56px;
+  --header-height: clamp(48px, 6vh, 72px);
+  --slide-aspect: 16 / 9;
+  --content-max: min(100vw, calc(100vh * 16 / 9));
+
+  /* Animaciones */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+}
