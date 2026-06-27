@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Informe de Cierre PDI 2025 — Planeación y Gestión Institucional</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="./data-bundle.js"></script>
 <style>
 /* === Reset === */
@@ -140,6 +141,45 @@ body{background:#f0f4f8;font-family:'Montserrat',sans-serif;overflow:hidden;heig
 .toggle-btns{display:flex;gap:6px;margin-left:auto;}
 .toggle-btns button{border:2px solid #ccc;background:white;color:#555;border-radius:8px;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.72em;transition:all 0.15s;}
 .toggle-btns button.active{background:var(--navy);color:white;border-color:var(--navy);}
+
+/* === Tarjetas Unidad animaciones === */
+.card-unidad{animation:slideUpIn 0.5s ease-out backwards;}
+.card-unidad:nth-child(1){animation-delay:0.1s;}
+.card-unidad:nth-child(2){animation-delay:0.2s;}
+.card-unidad:nth-child(3){animation-delay:0.3s;}
+.card-unidad:nth-child(4){animation-delay:0.25s;}
+.card-unidad:nth-child(5){animation-delay:0.35s;}
+.card-unidad:nth-child(6){animation-delay:0.4s;}
+
+@keyframes slideUpIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.card-unidad{cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.card-unidad:hover{transform:translateY(-8px) scale(1.05);box-shadow:0 16px 32px rgba(0,0,0,0.25)!important;}
+.card-unidad:active{transform:translateY(-4px) scale(1.02);}
+
+.card-unidad-pct{animation:subtlePulse 2s ease-in-out infinite;}
+@keyframes subtlePulse{
+  0%,100%{opacity:1;}
+  50%{opacity:0.85;}
+}
+
+.obj-item{
+  animation:objSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) backwards;
+  transition:transform 0.2s ease, filter 0.2s ease;
+  cursor:default;
+}
+.obj-item:hover{
+  transform:translateX(5px);
+  filter:drop-shadow(0 3px 8px rgba(0,0,0,0.18));
+}
+.obj-item-left:hover{ transform:translateX(-5px); }
+@keyframes objSlideIn{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
 </style>
 </head>
 <body>
@@ -873,84 +913,270 @@ body{background:#f0f4f8;font-family:'Montserrat',sans-serif;overflow:hidden;heig
   h += '<div class="slide" id="slide-planes" data-title="Planes Anuales de Retos"><div class="sf" style="background:white;display:flex;flex-direction:column;">';
   h += '<div style="background:var(--navy);padding:14px 22px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">📋</span><span style="color:white;font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Planes Anuales de Retos</span></div>';
   h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px 36px;background:#f8fafe"><div style="display:flex;gap:16px;width:100%;max-width:860px">';
-  [{id:'reporte',bg:'#1FB2DE',icon:'📊',title:'Reporte Anual<br>Institucional',desc:'Avance y cumplimiento 2022–2024'},{id:'unidad',bg:'#EC0677',icon:'🏢',title:'Unidad – Área',desc:'Cumplimiento por área organizacional'},{id:'lineas-est',bg:'#A6CE38',icon:'🎯',title:'Líneas<br>Estratégicas',desc:'Avance por línea PDI 2025'},{id:'objetivos',bg:'#FBAF17',icon:'✓',title:'Objetivos<br>Estratégicos',desc:'CMI Estratégico institucional'}].forEach(function (pc) {
+  [
+    {id:'reporte',   bg:'#1FB2DE', title:'Reporte Anual<br>Institucional', icon:'fa-square-poll-vertical'},
+    {id:'unidad',    bg:'#EC0677', title:'Unidad – Área',                  icon:'fa-sitemap'},
+    {id:'lineas-est',bg:'#A6CE38', title:'Líneas<br>Estratégicas',         icon:'fa-circle-nodes'},
+    {id:'objetivos', bg:'#FBAF17', title:'Objetivos<br>Estratégicos',      icon:'fa-clipboard-list'}
+  ].forEach(function(pc){
     var tc = pc.bg==='#EC0677' ? 'white' : '#0F385A';
-    h += '<div onclick="goTo(\''+pc.id+'\')" style="background:'+pc.bg+';border-radius:16px;padding:22px 18px;flex:1;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.14);transition:transform 0.15s;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;min-height:160px" onmouseenter="this.style.transform=\'translateY(-5px)\'" onmouseleave="this.style.transform=\'translateY(0)\'"><div style="background:rgba(255,255,255,0.22);border-radius:12px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-size:1.7em">'+pc.icon+'</div><div style="font-weight:900;color:'+tc+';font-size:clamp(10px,1.0vw,13px);text-transform:uppercase;letter-spacing:0.5px;line-height:1.25">'+pc.title+'</div><div style="font-size:0.66em;color:'+(pc.bg==='#EC0677'?'rgba(255,255,255,0.8)':'rgba(15,56,90,0.8)')+';line-height:1.3">'+pc.desc+'</div></div>';
+    h += '<div onclick="goTo(\''+pc.id+'\')" style="background:'+pc.bg+';border-radius:20px;padding:36px 18px 28px;flex:1;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.15);transition:transform 0.18s,box-shadow 0.18s;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px" onmouseenter="this.style.transform=\'translateY(-8px) scale(1.03)\';this.style.boxShadow=\'0 14px 32px rgba(0,0,0,0.25)\'" onmouseleave="this.style.transform=\'translateY(0) scale(1)\';this.style.boxShadow=\'0 6px 20px rgba(0,0,0,0.15)\'">';
+    h += '<i class="fas '+pc.icon+'" style="color:white;font-size:3.8em;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.25))"></i>';
+    h += '<div style="font-weight:900;color:'+tc+';font-size:clamp(11px,1.1vw,14px);text-transform:uppercase;letter-spacing:0.6px;line-height:1.35">'+pc.title+'</div>';
+    h += '</div>';
   });
   h += '</div></div></div></div>';
 
   /* ===== REPORTE ===== */
   h += '<div class="slide" id="slide-reporte" data-title="Reporte Anual Institucional"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
   h += '<div style="background:var(--cyan);padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">📊</span><span style="color:var(--navy);font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Reporte Anual Institucional</span></div>';
-  h += '<div style="flex:1;display:flex;flex-direction:column;padding:20px 28px;gap:16px;justify-content:center">';
-  h += '<div style="display:flex;gap:20px;align-items:flex-end;justify-content:center">';
-  [{anio:2022,pct:96,alt:70,planes:33,color:'#0F385A'},{anio:2023,pct:97,alt:105,planes:55,color:'#A6CE38'},{anio:2024,pct:98,alt:140,planes:83,color:'#1FB2DE'}].forEach(function (yr) {
-    h += '<div style="display:flex;flex-direction:column;align-items:center;gap:8px"><div style="color:'+yr.color+';font-weight:900;font-size:0.85em">'+yr.pct+'%</div><div style="width:80px;height:'+yr.alt+'px;background:'+yr.color+';border-radius:10px 10px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px"><span style="color:white;font-weight:900;font-size:0.9em">'+yr.planes+'</span></div><div style="font-weight:700;color:var(--navy);font-size:0.78em">'+yr.anio+'</div><div style="font-size:0.65em;color:#888">'+yr.planes+' planes</div></div>';
+  h += '<div style="flex:1;display:flex;flex-direction:column;padding:20px 28px;gap:24px;justify-content:center;align-items:center">';
+
+  var reporteData = [{anio:2022,pct:96,planes:33,color:'#0F385A',darker:'#061826',light:'#1F5A8A'},{anio:2023,pct:97,planes:55,color:'#A6CE38',darker:'#5A7015',light:'#C5E16B'},{anio:2024,pct:98,planes:83,color:'#1FB2DE',darker:'#0B5A85',light:'#5CC8F0'},{anio:2025,pct:99,planes:84,color:'#FBAF17',darker:'#B37D07',light:'#FFD966'}];
+
+  // Top: Year cards (2022 to 2025) - CENTERED
+  h += '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%;max-width:900px">';
+  var yearsDesc = [{anio:2022,avReal:'96%',avEsp:'100%',cum:'96%',color:'#0F385A'},{anio:2023,avReal:'97%',avEsp:'100%',cum:'97%',color:'#A6CE38'},{anio:2024,avReal:'98%',avEsp:'100%',cum:'98%',color:'#1FB2DE'},{anio:2025,avReal:'98%',avEsp:'100%',cum:'99%',color:'#FBAF17'}];
+  yearsDesc.forEach(function (yd) {
+    h += '<div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.08);min-width:200px">';
+    h += '<div style="background:#d9d9d9;padding:10px 14px;font-weight:700;color:#333;font-size:0.85em;text-transform:uppercase;letter-spacing:0.5px;text-align:center">'+yd.anio+'</div>';
+    h += '<div style="padding:14px;display:flex;gap:8px;flex-direction:column">';
+    h += '<div style="background:#FBAF17;color:white;border-radius:8px;padding:8px 12px;font-size:0.72em;font-weight:700;text-align:center"><div style="font-size:1.1em">'+yd.avReal+'</div><div>Avance Real</div></div>';
+    h += '<div style="background:#EC0677;color:white;border-radius:8px;padding:8px 12px;font-size:0.72em;font-weight:700;text-align:center"><div style="font-size:1.1em">'+yd.avEsp+'</div><div>Avance Esperado</div></div>';
+    h += '<div style="background:'+yd.color+';color:white;border-radius:8px;padding:8px 12px;font-size:0.72em;font-weight:700;text-align:center"><div style="font-size:1.1em">'+yd.cum+'%</div><div>Cumplimiento</div></div>';
+    h += '</div></div>';
   });
-  h += '</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">';
-  [{anio:2022,pct:96,planes:33,color:'#0F385A'},{anio:2023,pct:97,planes:55,color:'#A6CE38'},{anio:2024,pct:98,planes:83,color:'#1FB2DE'}].forEach(function (yr) {
-    h += '<div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.08);border-top:4px solid '+yr.color+'"><div style="font-size:0.65em;color:#888;font-weight:700;text-transform:uppercase;margin-bottom:6px">'+yr.anio+'</div><div style="font-size:1.8em;font-weight:900;color:'+yr.color+'">'+yr.pct+'%</div><div style="font-size:0.65em;color:#666;margin-top:4px">Cumplimiento global</div><div style="font-size:0.65em;color:#888">'+yr.planes+' planes evaluados</div></div>';
+  h += '</div>';
+
+  // Bottom: 3D Cylinders - two sections
+  h += '<div style="display:flex;gap:60px;justify-content:center;align-items:flex-end;flex-wrap:wrap">';
+
+  // Planes Anuales section
+  h += '<div style="display:flex;flex-direction:column;gap:16px;align-items:center">';
+  h += '<div style="font-weight:900;color:var(--navy);font-size:0.85em;text-transform:uppercase;letter-spacing:1px">Planes Anuales</div>';
+  h += '<div style="display:flex;gap:20px;align-items:flex-end">';
+  reporteData.forEach(function (yr) {
+    var altP = {2022:70,2023:105,2024:150,2025:160}[yr.anio];
+    h += '<div style="display:flex;flex-direction:column;align-items:center;gap:8px">';
+    h += '<div style="width:64px;height:18px;border-radius:50% 50% 45% 45%;background:linear-gradient(to bottom,'+yr.light+' 0%,'+yr.color+' 50%,'+yr.darker+' 100%);box-shadow:0 -3px 6px rgba(0,0,0,0.1),inset -2px 2px 4px rgba(0,0,0,0.1)"></div>';
+    h += '<div style="width:64px;height:'+altP+'px;background:linear-gradient(to right,'+yr.darker+' 0%,'+yr.darker+' 15%,'+yr.color+' 50%,'+yr.light+' 85%,'+yr.light+' 100%);border-radius:4px;display:flex;align-items:center;justify-content:center;box-shadow:-8px 0 12px rgba(0,0,0,0.2),8px 0 12px rgba(255,255,255,0.15),0 8px 16px rgba(0,0,0,0.25)">';
+    h += '<span style="color:white;font-weight:900;font-size:1.1em;text-shadow:0 2px 4px rgba(0,0,0,0.4)">'+yr.planes+'</span></div>';
+    h += '<div style="width:64px;height:18px;border-radius:45% 45% 50% 50%;background:linear-gradient(to top,'+yr.darker+' 0%,'+yr.darker+' 40%,'+yr.color+' 100%);box-shadow:0 3px 6px rgba(0,0,0,0.2),inset 2px -2px 4px rgba(0,0,0,0.15)"></div>';
+    h += '<div style="font-weight:700;color:var(--navy);font-size:0.8em;margin-top:4px">'+yr.anio+'</div>';
+    h += '</div>';
   });
-  h += '</div></div></div></div>';
+  h += '</div></div>';
+
+  // Cumplimiento section
+  h += '<div style="display:flex;flex-direction:column;gap:16px;align-items:center">';
+  h += '<div style="font-weight:900;color:var(--navy);font-size:0.85em;text-transform:uppercase;letter-spacing:1px">Cumplimiento</div>';
+  h += '<div style="display:flex;gap:20px;align-items:flex-end">';
+  reporteData.forEach(function (yr) {
+    var altC = {2022:90,2023:120,2024:150,2025:170}[yr.anio];
+    h += '<div style="display:flex;flex-direction:column;align-items:center;gap:8px">';
+    h += '<div style="width:64px;height:18px;border-radius:50% 50% 45% 45%;background:linear-gradient(to bottom,'+yr.light+' 0%,'+yr.color+' 50%,'+yr.darker+' 100%);box-shadow:0 -3px 6px rgba(0,0,0,0.1),inset -2px 2px 4px rgba(0,0,0,0.1)"></div>';
+    h += '<div style="width:64px;height:'+altC+'px;background:linear-gradient(to right,'+yr.darker+' 0%,'+yr.darker+' 15%,'+yr.color+' 50%,'+yr.light+' 85%,'+yr.light+' 100%);border-radius:4px;display:flex;align-items:center;justify-content:center;box-shadow:-8px 0 12px rgba(0,0,0,0.2),8px 0 12px rgba(255,255,255,0.15),0 8px 16px rgba(0,0,0,0.25)">';
+    h += '<span style="color:white;font-weight:900;font-size:1.1em;text-shadow:0 2px 4px rgba(0,0,0,0.4)">'+yr.pct+'%</span></div>';
+    h += '<div style="width:64px;height:18px;border-radius:45% 45% 50% 50%;background:linear-gradient(to top,'+yr.darker+' 0%,'+yr.darker+' 40%,'+yr.color+' 100%);box-shadow:0 3px 6px rgba(0,0,0,0.2),inset 2px -2px 4px rgba(0,0,0,0.15)"></div>';
+    h += '<div style="font-weight:700;color:var(--navy);font-size:0.8em;margin-top:4px">'+yr.anio+'</div>';
+    h += '</div>';
+  });
+  h += '</div></div>';
+  h += '</div>';
+  h += '</div></div></div>';
 
   /* ===== UNIDAD ===== */
   h += '<div class="slide" id="slide-unidad" data-title="Unidad – Área"><div class="sf" style="display:flex;flex-direction:column;background:white;">';
   h += '<div style="background:var(--pink);padding:13px 22px;flex-shrink:0;display:flex;align-items:center;gap:10px"><span style="font-size:1.3em">🏢</span><span style="color:white;font-weight:900;font-size:clamp(12px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Tablero por Unidad — Área</span></div>';
-  h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:30px;background:#f8fafe"><div style="background:white;border-radius:16px;padding:28px 40px;box-shadow:0 4px 18px rgba(0,0,0,0.08);text-align:center;max-width:560px;border:2px solid #eef2f7"><div style="font-size:3em;margin-bottom:12px">⏳</div><div style="font-weight:900;color:var(--navy);font-size:1.15em;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Información Pendiente</div><div style="color:#666;font-size:0.83em;line-height:1.6">Los tableros de seguimiento por unidad y área estarán disponibles próximamente. Contacte a la Gerencia de Planeación y Gestión.</div></div>';
-  h += '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">';
-  unidades.forEach(function (u) {
-    var col = u.color||'#0F385A';
-    h += '<div style="background:white;border-radius:10px;padding:10px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.07);display:flex;align-items:center;gap:8px;border:2px solid '+col+'20"><div style="background:'+col+';width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1em">🏛️</div><span style="font-size:0.76em;font-weight:700;color:var(--navy)">'+esc(u.nombre)+'</span></div>';
+  h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:#f8fafe">';
+
+  var retosU = D.retos_unidades || [];
+  var uColorMap = {
+    'Rectoría':                    '#0F385A',
+    'Vicerrectoría académica':     '#EC0677',
+    'Vicerrectoría del estudiante':'#1FB2DE',
+    'Vicerrectoría de crecimiento':'#FBAF17',
+    'Vicerrectoría Financiera':    '#A6CE38',
+    'Sede Medellín':               '#15BECE'
+  };
+  var iconMap = {
+    'Rectoría':                    'fa-user',
+    'Vicerrectoría académica':     'fa-book',
+    'Vicerrectoría del estudiante':'fa-graduation-cap',
+    'Vicerrectoría de crecimiento':'fa-chart-line',
+    'Vicerrectoría Financiera':    'fa-money-bill-wave',
+    'Sede Medellín':               'fa-building'
+  };
+  var labelMap = {
+    'Rectoría':                    'Rectoría',
+    'Vicerrectoría académica':     'Vicerrectoría Académica',
+    'Vicerrectoría del estudiante':'Vicerrectoría Estudiante',
+    'Vicerrectoría de crecimiento':'Vicerrectoría Crecimiento',
+    'Vicerrectoría Financiera':    'Vicerrectoría Financiera',
+    'Sede Medellín':               'Sede Medellín'
+  };
+
+  h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:800px">';
+  retosU.forEach(function (u) {
+    var col = uColorMap[u.Unidad] || '#0F385A';
+    var iconClass = iconMap[u.Unidad] || 'fa-building';
+    var label = labelMap[u.Unidad] || u.Unidad;
+    var pct = Math.round(parseFloat(u['2025'])*100);
+
+    h += '<div class="card-unidad" style="width:140px;height:200px;background:'+col+';border-radius:14px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:16px 12px;box-shadow:0 8px 20px rgba(0,0,0,0.15);text-align:center">';
+    h += '<div style="color:white;font-weight:700;font-size:0.8em;line-height:1.2">'+label+'</div>';
+    h += '<i class="fas '+iconClass+'" style="color:white;font-size:3em;transition:transform 0.3s ease;"></i>';
+    h += '<div class="card-unidad-pct" style="color:white;font-weight:900;font-size:2.4em">'+pct+'%</div>';
+    h += '</div>';
   });
   h += '</div></div></div></div>';
 
-  /* ===== LINEAS-EST (con HEATMAP) ===== */
+  /* ===== LINEAS-EST (con gráfica de pétalos) ===== */
   h += '<div class="slide" id="slide-lineas-est" data-title="Líneas Estratégicas"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
-  h += '<div style="background:var(--green);padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🎯</span><span style="color:var(--navy);font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Líneas Estratégicas — Avance 2025</span></div>';
-  h += '<div style="flex:1;display:flex;gap:20px;padding:16px 28px;overflow:hidden;">';
-  /* left: lista */
-  h += '<div style="flex:1;display:flex;flex-direction:column;gap:8px;justify-content:center;">';
-  var lineLE = [{id:'sostenibilidad',icon:'🌿'},{id:'calidad',icon:'🏅'},{id:'expansion',icon:'📈'},{id:'experiencia',icon:'⭐'},{id:'educacion',icon:'📚'},{id:'transformacion',icon:'⚙️'}];
-  lineLE.forEach(function (ll) {
-    var a = avMap[ll.id] || {};
-    var lc = colorMap[ll.id];
-    h += '<div style="background:white;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:5px solid '+lc+'"><span style="font-size:1.2em">'+ll.icon+'</span><div style="flex:1"><div style="font-weight:900;font-size:0.86em;color:var(--navy)">'+esc(lineNameMap[ll.id])+'</div><div style="font-size:0.63em;color:#888;margin-top:1px">'+(a.retos||'—')+' retos · '+(a.areas||'—')+' áreas</div></div><div style="background:'+lc+';color:'+(ll.id==='calidad'||ll.id==='educacion'?'white':'#0F385A')+';border-radius:8px;padding:4px 14px;font-weight:900;font-size:0.9em">'+(a.cumplimiento ? Math.round(a.cumplimiento)+'%' : '—')+'</div></div>';
+  h += '<div style="background:var(--green);padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><i class="fas fa-medal" style="color:var(--navy);font-size:1.3em"></i><span style="color:var(--navy);font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Líneas Estratégicas — Avance 2025</span></div>';
+  h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;gap:28px;padding:16px 24px">';
+
+  var lineLeft  = ['sostenibilidad','transformacion','experiencia'];
+  var lineRight = ['calidad','expansion','educacion'];
+  var lineFA    = {sostenibilidad:'fa-globe',transformacion:'fa-users',experiencia:'fa-star',calidad:'fa-medal',expansion:'fa-compass',educacion:'fa-book-open'};
+
+  // Columna izquierda — cada ítem: [círculo ícono] [label coloreado] en fila, luego % abajo
+  h += '<div style="display:flex;flex-direction:column;gap:22px">';
+  lineLeft.forEach(function(lid){
+    var a    = avMap[lid] || {};
+    var col  = colorMap[lid] || '#0F385A';
+    var name = lineNameMap[lid] || lid;
+    var pct  = a.cumplimiento ? Math.round(a.cumplimiento)+'%' : '—';
+    var icon = lineFA[lid] || 'fa-circle';
+    h += '<div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px">';
+    h += '<div style="display:flex;align-items:center;gap:10px">';
+    h += '<div style="width:52px;height:52px;border-radius:50%;border:3px solid '+col+';background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0">';
+    h += '<i class="fas '+icon+'" style="color:'+col+';font-size:1.3em"></i></div>';
+    h += '<div style="background:'+col+';color:white;font-weight:800;font-size:0.78em;padding:8px 14px;border-radius:8px;line-height:1.25;max-width:140px">'+name+'</div>';
+    h += '</div>';
+    h += '<div style="color:'+col+';font-weight:900;font-size:1.5em;padding-left:4px">'+pct+'</div>';
+    h += '</div>';
   });
   h += '</div>';
-  /* right: heatmap */
-  h += '<div style="flex:0 0 260px;display:flex;flex-direction:column;gap:8px;justify-content:center;">';
-  h += '<div style="font-weight:900;color:var(--navy);font-size:0.78em;text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:2px;">Mapa de Cumplimiento</div>';
-  h += '<div class="hm-grid">';
-  h += '<div class="hm-head" style="background:var(--navy)">Línea</div>';
-  h += '<div class="hm-head" style="background:var(--cyan)">Real %</div>';
-  h += '<div class="hm-head" style="background:var(--teal)">Esperado %</div>';
-  lineIds.forEach(function (lid) {
-    var a = avMap[lid] || {};
-    var real = parseInt(a.real) || 0;
-    var esp  = parseInt(a.esperado) || 100;
-    var rc   = heatColor(real), rt = heatTextColor(real);
-    var ec   = heatColor(esp),  et = heatTextColor(esp);
-    var short = {calidad:'Calidad',educacion:'Educación',expansion:'Expansión',experiencia:'Experiencia',transformacion:'Transform.',sostenibilidad:'Sostenib.'};
-    h += '<div class="hm-name">'+short[lid]+'</div>';
-    h += '<div class="hm-cell" style="background:'+rc+';color:'+rt+'">'+real+'%</div>';
-    h += '<div class="hm-cell" style="background:'+ec+';color:'+et+'">'+esp+'%</div>';
+
+  // Centro: gráfica de pétalos con esfera (replicando estructura de home)
+  h += '<div style="position:relative;height:min(calc(100vh - 160px),420px);aspect-ratio:721/735;flex-shrink:0">';
+  h += '<img src="./public/img/brand/lineas-estrategicas.jpg" style="width:100%;height:100%">';
+  h += '<svg viewBox="0 0 721 735" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none"><circle cx="374" cy="352" r="105" fill="white"/></svg>';
+  h += '<div class="esfera" style="z-index:2">';
+  h += '<div class="esfera-banda">';
+  h += '<div class="esfera-cara cara-icon"><img src="./PDI/Comunidad.png" alt="Comunidad"></div>';
+  h += '<div class="esfera-cara cara-logo"><img src="./public/img/brand/logo-poli.jpg" alt="Logo Poli"></div>';
+  h += '<div class="esfera-cara cara-icon"><img src="./PDI/Comunidad.png" alt="Comunidad"></div>';
+  h += '</div>';
+  h += '<div class="esfera-curva"></div>';
+  h += '<div class="esfera-luz"></div>';
+  h += '</div>';
+  h += '</div>';
+
+  // Columna derecha
+  h += '<div style="display:flex;flex-direction:column;gap:22px">';
+  lineRight.forEach(function(lid){
+    var a    = avMap[lid] || {};
+    var col  = colorMap[lid] || '#0F385A';
+    var name = lineNameMap[lid] || lid;
+    var pct  = a.cumplimiento ? Math.round(a.cumplimiento)+'%' : '—';
+    var icon = lineFA[lid] || 'fa-circle';
+    h += '<div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px">';
+    h += '<div style="display:flex;align-items:center;gap:10px">';
+    h += '<div style="width:52px;height:52px;border-radius:50%;border:3px solid '+col+';background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0">';
+    h += '<i class="fas '+icon+'" style="color:'+col+';font-size:1.3em"></i></div>';
+    h += '<div style="background:'+col+';color:white;font-weight:800;font-size:0.78em;padding:8px 14px;border-radius:8px;line-height:1.25;max-width:140px">'+name+'</div>';
+    h += '</div>';
+    h += '<div style="color:'+col+';font-weight:900;font-size:1.5em;padding-left:4px">'+pct+'</div>';
+    h += '</div>';
   });
   h += '</div>';
-  h += '<div style="display:flex;gap:6px;margin-top:6px;justify-content:center;flex-wrap:wrap;">';
-  [['#A6CE38','≥95%'],['#1FB2DE','85–94%'],['#FBAF17','70–84%'],['#EC0677','<70%']].forEach(function(lg){ h += '<div style="display:flex;align-items:center;gap:3px;font-size:0.6em;font-weight:700;color:#555"><div style="width:10px;height:10px;border-radius:3px;background:'+lg[0]+'"></div>'+lg[1]+'</div>'; });
-  h += '</div></div></div></div></div>';
+
+  h += '</div></div></div>';
 
   /* ===== OBJETIVOS ===== */
   h += '<div class="slide" id="slide-objetivos" data-title="Objetivos Estratégicos"><div class="sf" style="background:#f7faff;display:flex;flex-direction:column;">';
-  h += '<div style="background:var(--yellow);padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><span style="font-size:1.4em">🎯</span><span style="color:var(--navy);font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Objetivos Estratégicos — Cumplimiento 2025</span></div>';
-  h += '<div style="flex:1;overflow-y:auto;padding:14px 22px;display:flex;flex-direction:column;gap:7px">';
-  obj.forEach(function (o) {
+  h += '<div style="background:var(--yellow);padding:14px 24px;flex-shrink:0;display:flex;align-items:center;gap:12px"><i class="fas fa-bullseye" style="color:var(--navy);font-size:1.2em"></i><span style="color:var(--navy);font-weight:900;font-size:clamp(13px,1.7vw,22px);text-transform:uppercase;letter-spacing:1px">Objetivos Estratégicos — Cumplimiento 2025</span></div>';
+  h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px 18px">';
+
+  // OE-01=top | OE-02..06=left | OE-07..11=right
+  var objTop   = obj.slice(0, 1);
+  var objLeft  = obj.slice(1, 6);
+  var objRight = obj.slice(6, 11);
+
+  // Wrapper vertical: top obj + row — ocupa toda la altura disponible
+  h += '<div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:1100px;height:100%">';
+
+  // Función para poner en negrita las palabras clave (primer fragmento antes de conector)
+  function boldObj(nombre) {
+    var breaks = [' y la ',' y el ',' y de ',' y los ',' y ',' de la ',' de los ',' de ',' por ',' con compromiso',' con ',' en los ',' en la ',' en ',' centrada',' como ',' basada',' que trabaja'];
+    for (var bi=0;bi<breaks.length;bi++) {
+      var idx = nombre.indexOf(breaks[bi]);
+      if (idx >= 7) {
+        return '<strong style="font-weight:800;color:#111">'+esc(nombre.substring(0,idx))+'</strong><span style="color:#444">'+esc(nombre.substring(idx))+'</span>';
+      }
+    }
+    return '<strong style="font-weight:800;color:#111">'+esc(nombre)+'</strong>';
+  }
+
+  // Top objective (OE-01 / calidad) — centrado, más prominente
+  if (objTop.length) {
+    var ot = objTop[0];
+    var otCol = colorMap[ot.linea] || '#EC0677';
+    var otReal = parseInt(ot.real) || 0;
+    h += '<div class="obj-item" style="display:flex;align-items:center;gap:12px;animation-delay:0s;background:white;border-radius:30px;padding:6px 18px 6px 6px;box-shadow:0 4px 16px rgba(0,0,0,0.10)">';
+    h += '<div style="background:'+otCol+';color:white;border-radius:24px;padding:6px 16px;font-weight:900;font-size:1em;flex-shrink:0;box-shadow:0 4px 12px '+otCol+'66">'+otReal+'%</div>';
+    h += '<div style="font-size:0.83em;line-height:1.3">'+boldObj(ot.nombre)+'</div>';
+    h += '</div>';
+  }
+
+  // Row: left | petal chart | right
+  h += '<div style="display:flex;align-items:stretch;gap:16px;width:100%;flex:1">';
+
+  // Left column — 5 items con animación escalonada
+  h += '<div style="display:flex;flex-direction:column;justify-content:space-evenly;flex:1;min-width:0;padding-right:4px">';
+  objLeft.forEach(function(o, i){
+    var col  = colorMap[o.linea] || '#0F385A';
     var real = parseInt(o.real) || 0;
-    var col = real>=95?'#A6CE38':real>=85?'#1FB2DE':real>=70?'#FBAF17':'#EC0677';
-    var tc  = real<70 ? 'white' : '#0F385A';
-    var lc  = colorMap[o.linea] || '#0F385A';
-    h += '<div style="display:flex;align-items:center;gap:10px;background:white;border-radius:9px;padding:8px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.07)"><div style="background:'+lc+';color:white;border-radius:6px;padding:3px 10px;font-weight:900;font-size:0.82em;flex-shrink:0;min-width:46px;text-align:center">'+real+'%</div><div style="font-size:0.76em;color:#333;line-height:1.3">'+esc(o.nombre)+'</div></div>';
+    var delay = (0.08 + i*0.07).toFixed(2);
+    h += '<div class="obj-item obj-item-left" style="display:flex;align-items:flex-start;gap:10px;animation-delay:'+delay+'s;background:white;border-radius:14px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,0.07);border-left:4px solid '+col+'">';
+    h += '<div style="background:'+col+';color:white;border-radius:20px;padding:4px 11px;font-weight:900;font-size:0.8em;flex-shrink:0;white-space:nowrap;box-shadow:0 3px 8px '+col+'55;min-width:48px;text-align:center">'+real+'%</div>';
+    h += '<div style="font-size:0.71em;line-height:1.4;padding-top:1px">'+boldObj(o.nombre)+'</div>';
+    h += '</div>';
   });
+  h += '</div>';
+
+  // Center: petal chart + esfera animada
+  h += '<div style="position:relative;height:min(calc(100vh - 180px),380px);aspect-ratio:721/735;flex-shrink:0;align-self:center">';
+  h += '<img src="./public/img/brand/lineas-estrategicas.jpg" style="width:100%;height:100%">';
+  h += '<svg viewBox="0 0 721 735" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none"><circle cx="374" cy="352" r="105" fill="white"/></svg>';
+  h += '<div class="esfera" style="z-index:2">';
+  h += '<div class="esfera-banda">';
+  h += '<div class="esfera-cara cara-icon"><img src="./PDI/Comunidad.png" alt="Comunidad"></div>';
+  h += '<div class="esfera-cara cara-logo"><img src="./public/img/brand/logo-poli.jpg" alt="Logo Poli"></div>';
+  h += '<div class="esfera-cara cara-icon"><img src="./PDI/Comunidad.png" alt="Comunidad"></div>';
+  h += '</div>';
+  h += '<div class="esfera-curva"></div>';
+  h += '<div class="esfera-luz"></div>';
+  h += '</div>';
+  h += '</div>';
+
+  // Right column — 5 items con animación escalonada
+  h += '<div style="display:flex;flex-direction:column;justify-content:space-evenly;flex:1;min-width:0;padding-left:4px">';
+  objRight.forEach(function(o, i){
+    var col  = colorMap[o.linea] || '#0F385A';
+    var real = parseInt(o.real) || 0;
+    var delay = (0.08 + i*0.07).toFixed(2);
+    h += '<div class="obj-item" style="display:flex;align-items:flex-start;gap:10px;animation-delay:'+delay+'s;background:white;border-radius:14px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,0.07);border-right:4px solid '+col+'">';
+    h += '<div style="background:'+col+';color:white;border-radius:20px;padding:4px 11px;font-weight:900;font-size:0.8em;flex-shrink:0;white-space:nowrap;box-shadow:0 3px 8px '+col+'55;min-width:48px;text-align:center">'+real+'%</div>';
+    h += '<div style="font-size:0.71em;line-height:1.4;padding-top:1px">'+boldObj(o.nombre)+'</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  h += '</div>'; // end row
+  h += '</div>'; // end wrapper
   h += '</div></div></div>';
 
   /* ===== PROYECTOS (con TIMELINE) ===== */

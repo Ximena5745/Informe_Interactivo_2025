@@ -4,30 +4,47 @@ El HTML lo carga como <script> normal (funciona en file:// sin CORS).
 Ejecutar: python scripts/bundle_data.py
 """
 from __future__ import annotations
-import os, json, zipfile, xml.etree.ElementTree as ET
+import os, json, zipfile, xml.etree.ElementTree as ET, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
 SOURCES = [
-    ("config",     "config"),
-    ("navegacion", "navegacion"),
-    ("avance",     "avance"),
-    ("foda",       "foda"),
-    ("pestel",     "pestel"),
-    ("proyectos",  "proyectos"),
-    ("objetivos",  "objetivos"),
-    ("reportes",   "historial"),
-    ("unidades",   "unidades"),
-    ("sources",    "fuentes"),
+    ("config",     "config",      "config/config.xlsx"),
+    ("navegacion", "navegacion",  "navegacion/navegacion.xlsx"),
+    ("avance",     "avance",      "avance/avance.xlsx"),
+    ("foda",       "foda",        "foda/foda.xlsx"),
+    ("pestel",     "pestel",      "pestel/pestel.xlsx"),
+    ("proyectos",  "proyectos",   "proyectos/proyectos.xlsx"),
+    ("objetivos",  "objetivos",   "objetivos/objetivos.xlsx"),
+    ("reportes",   "historial",   "reportes/reportes.xlsx"),
+    ("unidades",   "unidades",    "unidades/unidades.xlsx"),
+    ("sources",    "fuentes",     "sources/sources.xlsx"),
+    ("proyectos_pmo",     "proyectos", "proyectos/centroDeProyectos_PMO_2026.xlsx"),
+    ("cmi_estrategico",    "CMI Estrategico", "indicadores/CMI Estrategico.xlsx"),
+    ("retos_unidades", "Unidad", "retos/Consolidado_Retos_PDI.xlsx"),
 ]
 
 
 def read_xlsx(path: str, sheet_name: str) -> list[dict]:
     z = zipfile.ZipFile(path)
-    sh_xml = z.read("xl/worksheets/sheet1.xml").decode("utf-8")
-    
+
+    # Find the correct sheet index by name
+    sheet_idx = 1
+    if sheet_name:
+        try:
+            wb_xml = z.read("xl/workbook.xml").decode("utf-8")
+            matches = re.findall(r'<sheet\b[^>]*\bname="([^"]*)"', wb_xml)
+            for i, name in enumerate(matches, 1):
+                if name == sheet_name:
+                    sheet_idx = i
+                    break
+        except KeyError:
+            pass
+
+    sh_xml = z.read(f"xl/worksheets/sheet{sheet_idx}.xml").decode("utf-8")
+
     # sharedStrings.xml may not exist if no string content
     strings = []
     try:
@@ -35,7 +52,7 @@ def read_xlsx(path: str, sheet_name: str) -> list[dict]:
         strings = [t.text or "" for t in ET.fromstring(ss_xml).iter(NS + "t")]
     except KeyError:
         pass
-    
+
     z.close()
     root = ET.fromstring(sh_xml)
 
@@ -93,8 +110,11 @@ def read_xlsx(path: str, sheet_name: str) -> list[dict]:
 
 def main():
     data = {}
-    for id_name, sheet in SOURCES:
-        path = os.path.join(DATA, id_name, f"{id_name}.xlsx")
+    for item in SOURCES:
+        id_name = item[0]
+        sheet = item[1]
+        rel_path = item[2] if len(item) > 2 else f"{id_name}/{id_name}.xlsx"
+        path = os.path.join(DATA, rel_path)
         if not os.path.isfile(path):
             print(f"  [SKIP] {id_name}: {path} no existe")
             continue
