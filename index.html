@@ -820,22 +820,52 @@ body{background:#f0f4f8;font-family:'Montserrat',sans-serif;overflow:hidden;heig
   h += '</div></div></div>';
 
   /* ===== LOGRO DETAIL SLIDES ===== */
-  var logroImages = {
-    calidad:        './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_CALIDAD_1.jpg',
-    expansion:      './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EXPANSION.jpg',
-    educacion:      './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EDUVIDA.jpg',
-    experiencia:    './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EXPERIENCIA.jpg',
-    transformacion: './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_TRANSFORMACION_1.jpg',
-    sostenibilidad: './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_SOSTENIBILIDAD_1.jpg'
+  var logroImagenesMap = {
+    calidad: [
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_CALIDAD 1.jpg',
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_CALIDAD 2.jpg'
+    ],
+    expansion: [
+      './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EXPANSION.jpg'
+    ],
+    educacion: [
+      './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EDUVIDA.jpg'
+    ],
+    experiencia: [
+      './public/img/logros/GP051-_INFOGRAFIAS_CAP_12_EXPERIENCIA.jpg'
+    ],
+    transformacion: [
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_TRANSFORMACION 1.jpg',
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_TRANSFORMACION 2.jpg',
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_TRANSFORMACION 3.jpg'
+    ],
+    sostenibilidad: [
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_SOSTENIBILIDAD 1.jpg',
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_SOSTENIBILIDAD 2.jpg',
+      './public/img/logros/GP051- INFOGRAFIAS CAP 12_SOSTENIBILIDAD 3.jpg'
+    ]
   };
   lineIds.forEach(function (lid, idx) {
-    var lc = lineColors[idx], ln = lineNames[idx], img = logroImages[lid]||'';
+    var lc = lineColors[idx], ln = lineNames[idx], imgs = logroImagenesMap[lid]||[];
     var tc = (lid==='experiencia'||lid==='transformacion'||lid==='expansion'||lid==='sostenibilidad') ? '#0F385A' : 'white';
     var logroId = slideSuffixes[idx].replace('-avance','-logro');
+    var carouselId = 'carousel-'+logroId;
     h += '<div class="slide" id="slide-'+logroId+'" data-title="'+esc(ln)+' – Logros 2025"><div class="sf" style="background:white;display:flex;flex-direction:column;overflow:hidden;">';
-    h += '<div style="background:'+lc+';padding:10px 20px;flex-shrink:0"><span style="color:'+tc+';font-weight:900;font-size:clamp(11px,1.4vw,17px);text-transform:uppercase">'+esc(ln)+' – Logros 2025</span></div>';
-    h += '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;">';
-    h += img ? '<img src="'+esc(img)+'" style="max-width:100%;max-height:100%;object-fit:contain">' : '<div style="text-align:center;color:#888">Infografía no disponible</div>';
+    h += '<div style="background:'+lc+';padding:12px 20px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between"><span style="color:'+tc+';font-weight:900;font-size:clamp(11px,1.4vw,17px);text-transform:uppercase">'+esc(ln)+' – Logros 2025</span><span style="color:'+tc+';font-weight:700;font-size:0.85em;opacity:0.8" id="'+carouselId+'-counter">1 de '+imgs.length+'</span></div>';
+    h += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;overflow:hidden;position:relative;">';
+    if (imgs.length > 0) {
+      h += '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;">';
+      imgs.forEach(function(img, i) {
+        h += '<img src="'+esc(img)+'" style="max-width:100%;max-height:100%;object-fit:contain;position:absolute;opacity:'+(i===0?'1':'0')+';transition:opacity 0.3s ease" class="'+carouselId+'-img" data-index="'+i+'">';
+      });
+      h += '</div>';
+      if (imgs.length > 1) {
+        h += '<button onclick="logro_prev(\''+carouselId+'\')" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.3);border:2px solid white;color:white;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.3em;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:10" onmouseover="this.style.background=\'rgba(0,0,0,0.5)\';" onmouseout="this.style.background=\'rgba(0,0,0,0.3)\';">‹</button>';
+        h += '<button onclick="logro_next(\''+carouselId+'\')" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.3);border:2px solid white;color:white;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.3em;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:10" onmouseover="this.style.background=\'rgba(0,0,0,0.5)\';" onmouseout="this.style.background=\'rgba(0,0,0,0.3)\';">›</button>';
+      }
+    } else {
+      h += '<div style="text-align:center;color:#888">Infografías no disponibles</div>';
+    }
     h += '</div></div></div>';
   });
 
@@ -1035,6 +1065,34 @@ body{background:#f0f4f8;font-family:'Montserrat',sans-serif;overflow:hidden;heig
     var btn = el.previousElementSibling;
     el.style.display = el.style.display === 'none' ? 'block' : 'none';
     if (btn) btn.querySelector('span:last-child').textContent = el.style.display === 'none' ? '▼' : '▲';
+  };
+
+  window.logro_next = function (carouselId) {
+    var imgs = document.querySelectorAll('.' + carouselId + '-img');
+    if (imgs.length === 0) return;
+    var current = 0;
+    imgs.forEach(function(img, idx) {
+      if (parseFloat(img.style.opacity) === 1) current = idx;
+    });
+    var next = (current + 1) % imgs.length;
+    imgs[current].style.opacity = '0';
+    imgs[next].style.opacity = '1';
+    var counter = document.getElementById(carouselId + '-counter');
+    if (counter) counter.textContent = (next + 1) + ' de ' + imgs.length;
+  };
+
+  window.logro_prev = function (carouselId) {
+    var imgs = document.querySelectorAll('.' + carouselId + '-img');
+    if (imgs.length === 0) return;
+    var current = 0;
+    imgs.forEach(function(img, idx) {
+      if (parseFloat(img.style.opacity) === 1) current = idx;
+    });
+    var prev = (current - 1 + imgs.length) % imgs.length;
+    imgs[current].style.opacity = '0';
+    imgs[prev].style.opacity = '1';
+    var counter = document.getElementById(carouselId + '-counter');
+    if (counter) counter.textContent = (prev + 1) + ' de ' + imgs.length;
   };
 
   window.setProyView = function (view) {
