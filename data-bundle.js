@@ -3819,7 +3819,7 @@ window.PDI_DATA = {
     },
     {
       "Unidad": "Vicerrectoría académica",
-      "2025": "0.97"
+      "2025": "1.00"
     },
     {
       "Unidad": "Vicerrectoría del estudiante",
@@ -3827,7 +3827,7 @@ window.PDI_DATA = {
     },
     {
       "Unidad": "Vicerrectoría de crecimiento",
-      "2025": "0.99"
+      "2025": "1.00"
     },
     {
       "Unidad": "Vicerrectoría Financiera",
@@ -3835,7 +3835,7 @@ window.PDI_DATA = {
     },
     {
       "Unidad": "Sede Medellín",
-      "2025": "0.98"
+      "2025": "0.99"
     }
   ]
 };
